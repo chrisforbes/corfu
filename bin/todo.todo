@@ -1,0 +1,58 @@
+TODO (This release):
+
+User Reported Bugs:
+[x] Save As doesnt change window title
+[x] Fix crash when opening a locked (already-open-for-write) file
+	[x] Avoid crash
+	[x] Actually FIX THE PROBLEM with a shadow copy into %temp%
+	
+[ ] Cursor in the gutter should be reversed-arrow. Clicking should select the line.
+	(See other editors)
+	
+[ ] Double-click (and Ctrl+left/right) behavior is weird and inconsistent in the presence of
+	punctuation.
+	
+[ ] Need a way to clear the green marks off the gutter.
+
+[ ] Reloading a file (because of external changes) shouldnt change order of document tabs
+	
+[ ] Need a way to add new buttons / menu items (global, and specific to a document type).
+	Being able to invoke external commands is really important here!
+	[ ] Macros (current-file, selection, project-file, paths, etc) to make these
+		shareable across different projects
+	
+[ ] Project browser has INVISIBLE but WORKING close button. Either remove it, or draw it?
+	
+[ ] Line height goes screwy if there are unprintable characters!
+	Eg. ascii 0x04
+	Maybe these should be shown with nice glyphs instead?
+	
+[ ] UTF-16 documents aren't handled properly (spaces everywhere)
+	Notepad does this right!
+	- are we ignoring BOM?
+
+[ ] Fix cascade of styles (nonreplaced parts of a style should be inherited 
+	from more general style, markup.* example)
+[ ] Fix contextPattern bug where blank `begin` style interacts badly with 
+	contextPattern's overall style.
+
+[ ] Auto-indent is broken when splitting a line if there is whitespace to the right of point
+[ ] Fix issue where the flashing caret sometimes gets lost
+[ ] Caret is difficult to see. Offer option to make it 2px wide.
+
+[ ] CSS completion again would be nice!
+[ ] Where is the mixed-language support in HTML/XML mode?
+[ ] How do I make completion for a language element, based on the content of a textfile I have?
+[ ] How do I change the font?
+[ ] If Corfu is already open, double-clicking on a file should open a new tab in the existing instance
+	
+Editor features:
+[ ] Current line/column/character display in status area
+[ ] In completion window, when using the user's typing as the source, keep the best match centered
+	
+Document tab strip stuff:
+[ ] Scroll tab bar if too many items, ensure that the current document is visible 
+[x] Clip tab rendering so we don't corrupt the closebutton (or dropdown button)
+[ ] Show drop down menu of open files at the right end of the tab bar
+[ ] Icons on items in drop-down documents list?
+[ ] Merge tabstrip usage with IjwFramework's code!

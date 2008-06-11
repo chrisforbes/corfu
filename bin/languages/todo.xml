@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<pattern regex="\[ \]" style="item.not-done.todo"/>
+	<pattern regex="\[\?\]" style="item.maybe-done.todo"/>
+	<pattern regex="\[[xX]\]" style="item.done.todo"/>
+	<pattern regex="~\S*" style="username.todo"/>
+</language>

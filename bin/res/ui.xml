@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui>
+	<!-- bindings between keys and image paths for the ui imagelist -->
+	<images>
+		<image name="new" path="/res/newhs.png"/>
+		<image name="open" path="/res/openhs.png"/>
+		<image name="save" path="/res/savehs.png"/>
+		<image name="saveall" path="/res/saveallhs.png"/>
+
+		<image name="cut" path="/res/cuths.png"/>
+		<image name="copy" path="/res/copyhs.png"/>
+		<image name="paste" path="/res/pastehs.png"/>
+
+		<image name="undo" path="/res/undohs.png"/>
+		<image name="redo" path="/res/redohs.png"/>
+		
+		<image name="find" path="/res/findhs.png"/>
+	</images>
+
+	<!-- menu items: note `handler` binds to an instance or static method on `EditorForm` -->
+	<menu>
+		<menu-item path="File/New..." handler="New" image="new" shortcut="Control+N"/>
+		<menu-item path="File/-" />
+		<menu-item path="File/Open..." handler="Open" image="open" shortcut="Control+O"/>
+		<menu-item path="File/Save" handler="Save" image="save" shortcut="Control+S" ehook="doc"/>
+		<menu-item path="File/Save As..." handler="SaveAs" ehook="doc"/>
+		<menu-item path="File/Save All" handler="SaveAll" image="saveall" shortcut="Control+Shift+S" ehook="doc"/>
+		<menu-item path="File/-" />
+		<menu-item path="File/Close" handler="CloseFile" shortcut="Control+F4" ehook="doc"/>
+		<menu-item path="File/Close All" handler="CloseAll" ehook="doc" />
+		<menu-item path="File/-" />
+		<menu-item path="File/Exit" handler="Close"/>
+
+		<menu-item path="Edit/Undo" handler="Undo" image="undo" shortcut="Control+Z" ehook="undo"/>
+		<menu-item path="Edit/Redo" handler="Redo" image="redo" shortcut="Control+Shift+Z" ehook="redo"/>
+		<menu-item path="Edit/-" />
+		<menu-item path="Edit/Cut" handler="Cut" image="cut" shortcut="Control+X" ehook="doc"/>
+		<menu-item path="Edit/Copy" handler="Copy" image="copy" shortcut="Control+C" ehook="doc"/>
+		<menu-item path="Edit/Paste" handler="Paste" image="paste" shortcut="Control+V" ehook="doc"/>
+		<menu-item path="Edit/Paste from History..." handler="PasteFromHistory" shortcut="Control+Shift+V" ehook="doc"/>
+		<menu-item path="Edit/Select All" handler="SelectAll" shortcut="Control+A" ehook="doc"/>
+		<menu-item path="Edit/-" />
+		<menu-item path="Edit/Find" handler="ShowFindBar" image="find" shortcut="Control+F" ehook="doc" />
+		<menu-item path="Edit/Swap Mark and Point" handler="SwapMarkAndPoint" shortcut="Control+M" ehook="doc" />
+		<menu-item path="Edit/Reload Languages" handler="ReloadStylers" shortcut="Control+K" ehook="doc"/>
+		<menu-item path="Edit/Load Language Definition" handler="LoadLanguageDefinition" shortcut="Control+D" ehook="doc"/>
+		
+		<menu-item path="Window/Next" handler="NextDocument" shortcut="Control+Tab" ehook="mdoc" />
+		<menu-item path="Window/Previous" handler="PreviousDocument" shortcut="Control+Shift+Tab" ehook="mdoc" />
+		
+		<menu-item path="Help/About" handler="About"/>
+		<menu-item path="Help/Check for Updates..." handler="CheckForUpdates"/>
+	</menu>
+
+	<!-- toolbar items -->
+	<toolbar>
+		<toolbar-button text="New..." handler="New" image="new"/>
+		<toolbar-button text="Open..." handler="Open" image="open"/>
+		<toolbar-button text="Save" handler="Save" image="save" ehook="doc"/>
+		<toolbar-button text="Save All" handler="SaveAll" image="saveall" ehook="doc"/>
+		<toolbar-button text="Find" handler="ShowFindBar" image="find" ehook="doc" />
+	</toolbar>
+</ui>

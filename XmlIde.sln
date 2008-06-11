@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor", "src\Editor\Editor.csproj", "{3735A4B6-D861-40A6-8F2E-7376102F2C50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlIde.LanguageFramework", "src\XmlIde.LanguageFramework\XmlIde.LanguageFramework.csproj", "{2EFC3844-B382-4169-B40D-2AC8E8D9CB79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlIde.Editor", "src\XmlIde.Editor\XmlIde.Editor.csproj", "{48B0E05E-3A10-48EF-B077-3FE88A1AE69F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3735A4B6-D861-40A6-8F2E-7376102F2C50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3735A4B6-D861-40A6-8F2E-7376102F2C50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3735A4B6-D861-40A6-8F2E-7376102F2C50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3735A4B6-D861-40A6-8F2E-7376102F2C50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EFC3844-B382-4169-B40D-2AC8E8D9CB79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EFC3844-B382-4169-B40D-2AC8E8D9CB79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EFC3844-B382-4169-B40D-2AC8E8D9CB79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EFC3844-B382-4169-B40D-2AC8E8D9CB79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48B0E05E-3A10-48EF-B077-3FE88A1AE69F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48B0E05E-3A10-48EF-B077-3FE88A1AE69F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48B0E05E-3A10-48EF-B077-3FE88A1AE69F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48B0E05E-3A10-48EF-B077-3FE88A1AE69F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

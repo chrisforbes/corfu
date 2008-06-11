@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<language>
+	<pattern regex="\b(import|public|private|protected|class|implements|final|const)\b" style="keyword.java"/>
+	<pattern regex="\b(char|long|null|if|else|while|for|switch|case|break|try|catch|static)\b" style="keyword.java"/>
+	<pattern regex="\b(this|return|super|package|new|extends|void|int|float|double|boolean)\b" style="keyword.java"/>
+	<pattern regex="\b(throws|throw|true|false|continue|interface|instanceof|byte)\b" style="keyword.java"/>
+	
+	<pattern regex="//.*$" style="comment.java"/>
+	<pattern regex="@\w+" style="directive.java"/>
+	
+	<contextPattern style="comment.java">
+		<begin>
+			<pattern regex="/\*" style="comment.java"/>
+		</begin>
+		<end>
+			<pattern regex="\*/" style="comment.java"/>
+		</end>
+	</contextPattern>
+	
+	<contextPattern style="string.java">
+		<begin>
+			<pattern regex="&quot;" style="string.java"/>
+		</begin>
+		<end>
+			<pattern regex="(?&lt;!\\)(\\\\)*&quot;" style="string.java"/>
+		</end>
+	</contextPattern>
+</language>
+

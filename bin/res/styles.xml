@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<styles>
+  <scope name="special">
+    <scope name="selection" forecolor="HighlightText" backcolor="Highlight" />
+    <scope name="debug-region" forecolor="Black" backcolor="White" decoration="Outline" />
+    <scope name="current-line" backcolor="#eeeeff" />
+  </scope>
+  <scope name="comment" forecolor="Green" />
+  <scope name="error" decoration="RedSquiggle" />
+  <scope name="string" forecolor="Red" />
+  <scope name="number" forecolor="Navy" />
+  <scope name="keyword" forecolor="Blue">
+    <scope name="callconv" forecolor="Purple" />
+    <scope name="profile" forecolor="DarkOrange" />
+    <scope name="semantic" forecolor="Purple" />
+    <scope name="type" forecolor="Teal" />
+  </scope>
+  <scope name="markup" forecolor="Maroon">
+    <scope name="element" forecolor="Navy" />
+    <scope name="attribute" forecolor="Blue" />
+    <scope name="cdata" backcolor="#ddddff" />
+    <scope name="doctype" forecolor="Gray" />
+    <scope name="entity" forecolor="DarkOrange" />
+    <scope name="value" forecolor="Red" />
+  </scope>
+  <scope name="func" forecolor="Teal" />
+  <scope name="type" forecolor="Teal" />
+  <scope name="directive" forecolor="Gray" />
+  <scope name="punctuation" forecolor="Maroon">
+    <scope name="barline" forecolor="Blue" backcolor="#eeeeee" />
+    <scope name="lineContinuation" forecolor="Red" />
+  </scope>
+  <scope name="header" forecolor="Blue" />
+  <scope name="item">
+    <scope name="not-done" forecolor="Red" backcolor="#ffeecc" />
+    <scope name="maybe-done" forecolor="DarkOrange" backcolor="#ffffcc" />
+    <scope name="done" forecolor="Green" backcolor="#ddffdd" />
+  </scope>
+  <scope name="username" forecolor="Blue" backcolor="#eeeeee" />
+</styles>

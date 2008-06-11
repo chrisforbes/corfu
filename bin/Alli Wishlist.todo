@@ -1,0 +1,15 @@
+TODO: ~Corfu
+
+[ ] Auto indent/mass reformatting code
+[ ] Language guessing for unknown file extentions
+[?] Easy file associoation setup/removal
+[ ] A not hack for the bottom scrollbar
+[ ] triple click line hi-lighting
+[ ] spellcheck
+[x] proper version numbers (its not even in the about box!)
+[ ] List of Shortcuts - generated from keybindings.xml 
+[?] Asking about opening binary files (so it doesnt take forever to render garbage)
+[ ] Automagically overtyping the space in the todo box - so dont have to delete 
+	the space for the colour to show.
+[ ] Dialog for adding templates - both blank and with content
+[?] Add date and time shortcut

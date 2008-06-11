@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<!-- reasonable match for GCC's `assembler-with-cpp` syntax. -->
+	<!-- probably looks silly with most other things :) -->
+
+	<!-- comments -->
+
+	<pattern regex="//.*$" style="comment.asm"/>
+	
+	<contextPattern style="comment.asm">
+		<begin>
+			<pattern regex="/\*" style="comment.asm"/>
+		</begin>
+		<end>
+			<pattern regex="\*/" style="comment.asm"/>
+		</end>
+	</contextPattern>
+	
+	<!-- strings -->
+	<contextPattern style="string.asm">
+		<begin>
+			<pattern regex="&quot;" style="string.asm"/>
+		</begin>
+		<end>
+			<pattern regex="&quot;" style="string.asm"/>
+		</end>
+	</contextPattern>
+	
+	<!-- `.` directives -->
+	<pattern regex="\.(.+?)\b" style="keyword.directive.asm"/>
+	
+	<!-- labels -->
+	<pattern regex="^\s*[^\s:/]+:" style="keyword.type.label.asm"/>
+	
+	<!-- opcodes -->
+	<pattern regex="^\s*[^\s:/]+\s" style="keyword.opcode.asm"/>
+	
+</language>

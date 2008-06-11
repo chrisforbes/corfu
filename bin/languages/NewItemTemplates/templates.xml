@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates>
+	<template 
+		name="XML Document" 
+		file="languages/NewItemTemplates/xmlDocTemplate.xml" 
+		icon="res/project/xmlfile.ico"
+		suffix=".xml" />
+		
+	<template 
+		name="XML Schema" 
+		file="languages/NewItemTemplates/xmlSchemaTemplate.xsd" 
+		icon="res/project/xsdfile.ico"
+		suffix=".xsd" />
+		
+	<template
+		name="HTML Document"
+		file="languages/NewItemTemplates/htmlTemplate.html"
+		icon="res/project/htmlfile.ico"
+		suffix=".html" />
+
+	<template
+		name="XHTML Document"
+		file="languages/NewItemTemplates/xhtmlTemplate.xhtml"
+		icon="res/project/htmlfile.ico"
+		suffix=".xhtml" />
+		
+	<template
+		name="Text Document"
+		file=""
+		icon="res/project/genericfile.ico"
+		suffix=".txt" />
+		
+	<template
+		name="Style Sheet"
+		file="languages/NewItemTemplates/cssTemplate.css"
+		icon="res/project/cssfile.ico"
+		suffix=".css" />
+		
+	<template
+		name="JavaScript Source File"
+		file="languages/NewItemTemplates/jsTemplate.js"
+		icon="res/project/jsfile.ico"
+		suffix=".js" />
+		
+	<template
+		name="XSL Transform"
+		file="languages/NewItemTemplates/xslTemplate.xsl"
+		icon="res/project/xslfile.ico"
+		suffix=".xsl" />
+		
+	<template
+		name="TODO List"
+		file="languages/NewItemTemplates/todoTemplate.todo"
+		icon="res/project/genericfile.ico"
+		suffix=".todo" />
+</templates>
+

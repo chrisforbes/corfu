@@ -1,0 +1,24 @@
+WORK IN PROGRESS
+================
+
+The XmlIde-experimental tree is in no way "stable". It is currently in the middle of 
+massive restructuring, with the following goals (among others) in mind:
+
+- Updating the codebase to use C# 3.0 and .NET 3.5 features
+
+- Removing legacy language service DLL support
+
+- Removing broken "Project Browser" support
+
+- Removing unused completion support (XML was the only language to use it)
+
+- Replacing 1.1.x - 1.2.x language support with a simpler but much more powerful system
+
+- Replacing the document backend with a gapbuffer+linebuffer system, which allows
+  linear addressing within the document, and much simpler editing.
+  
+- Adding scope selectors for GUI elements, so we can have language-specific UI
+
+- Replacing slow (and glitchy) GDI+ renderer with a fast pure GDI renderer
+
+- Replacing XML with more expressive DSLs for configuration

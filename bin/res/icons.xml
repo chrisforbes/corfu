@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<icons>
+	<icon key="folderclosed" path="/res/project/folderc.png" />
+	<icon key="folderopen" path="/res/project/foldero.png" />
+	<icon key=".css" path="/res/project/cssfile.png" />
+	<icon key=".cs" path="/res/project/csfile.png" />
+	<icon key=".xml" path="/res/project/xmlfile.png" />
+	<icon key="generic" path="/res/project/genericfile.png" />
+	<icon key="project" path="/res/project/project.png" />
+	<icon key=".js" path="/res/project/scriptfile.png" />
+	<icon key=".xsl" path="/res/project/xslfile.png" />
+	<icon key=".xsd" path="/res/project/xsdfile.png" />
+	<icon key=".htm" path="/res/project/htmlfile.png" />
+	<icon key=".html" path="/res/project/htmlfile.png" />
+	<icon key=".shtml" path="/res/project/htmlfile.png" />
+	<icon key=".png" path="/res/project/jpgfile.png" />
+	<icon key=".jpg" path="/res/project/jpgfile.png" />
+	<icon key=".bmp" path="/res/project/jpgfile.png" />
+	<icon key=".gif" path="/res/project/jpgfile.png" />
+</icons>

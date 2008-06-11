@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<pattern regex="\b(function|procedure|var|begin|end|const|unit)\b" style="keyword.delphi"/>
+	<pattern regex="\b(interface|implementation|do|while|class|record|destructor|set)\b" style="keyword.delphi"/>
+	<pattern regex="\b(then|if|for|type|uses|else|not|or|external|override|dynamic)\b" style="keyword.delphi"/>
+	<pattern regex="\b(with|and|xor|shl|shr|to|exit|nil|array|of|case|constructor)\b" style="keyword.delphi"/>
+	<pattern regex="\b(private|public|protected|published|as|repeat|until)\b" style="keyword.delphi"/>
+
+	<pattern regex="\b(cdecl|safecall|fastcall|register|stdcall)\b" style="keyword.callconv.delphi"/>
+	
+	<capturePattern regex=":\s*([^=;)]+)" group0="" group1="keyword.type.delphi"/>
+
+	<pattern regex="//.*$" style="comment.delphi"/>
+	
+	<contextPattern style="directive.delphi">
+		<begin>
+			<pattern regex="{\$" style="directive.delphi" />
+		</begin>
+		<end>
+			<pattern regex="}" style="directive.delphi" />
+		</end>
+	</contextPattern>
+	
+	<contextPattern style="comment.delphi">
+		<begin>
+			<pattern regex="{" style="comment.delphi" />
+		</begin>
+		<end>
+			<pattern regex="}" style="comment.delphi" />
+		</end>
+	</contextPattern>
+	
+	<contextPattern style="comment.delphi">
+		<begin>
+			<pattern regex="\(\*" style="comment.delphi" />
+		</begin>
+		<end>
+			<pattern regex="\*\)" style="comment.delphi" />
+		</end>
+	</contextPattern>
+	
+	<contextPattern style="string.delphi">
+		<begin>
+			<pattern regex="'" style="string.delphi" />
+		</begin>
+		<end>
+			<pattern regex="'" style="string.delphi" />
+		</end>
+	</contextPattern>
+</language>

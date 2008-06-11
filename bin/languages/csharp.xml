@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<pattern regex="\b(public|protected|internal|private|static|virtual|override|const|stackalloc)\b" style="keyword.c#"/>
+	<pattern regex="\b(object|int|float|bool|uint|long|ulong|short|ushort|byte|sbyte|void)\b" style="keyword.c#"/>
+	<pattern regex="\b(class|struct|using|namespace|for|while|foreach|if|else|switch|case|default)\b" style="keyword.c#"/>
+	<pattern regex="\b(string|new|delegate|readonly|is|as|get|set|event|unsafe|fixed|volatile)\b" style="keyword.c#"/>
+	<pattern regex="\b(return|null|true|false|this|base|out|ref|throw|try|catch|partial)\b" style="keyword.c#"/>
+	
+	<pattern regex="//.*$" style="comment.c#"/>
+	
+	<contextPattern style="comment.c#">
+		<begin>
+			<pattern regex="/\*" style="comment.c#"/>
+		</begin>
+		<end>
+			<pattern regex="\*/" style="comment.c#"/>
+		</end>
+	</contextPattern>
+	
+	<contextPattern style="string.c#">
+		<begin>
+			<pattern regex="&quot;" style="string.c#"/>
+		</begin>
+		<end>
+			<pattern regex="(?&lt;!\\)(\\\\)*&quot;" style="string.c#"/>
+		</end>
+	</contextPattern>
+	
+	<!-- todo: verbatim string (`@`) -->
+</language>

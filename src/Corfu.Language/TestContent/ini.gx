@@ -1,0 +1,12 @@
+﻿-- standard windows INI format
+
+in [ini]
+	/;.*$/ -> [ini.comment]
+	
+	/(\[)[^\]]*(\])/ -> [ini.element] with
+		1: [ini.punctuation]
+		2: [ini.punctuation]
+		
+	/^([^=]+)=([^;]*)/ -> [ini.punctuation] with
+		1: [ini.attribute]
+		2: [ini.value]

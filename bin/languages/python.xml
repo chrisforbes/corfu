@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<pattern regex="#.*$" style="comment.python"/>
+	<contextPattern style="string.python">
+		<begin>
+			<pattern regex="&quot;&quot;&quot;" style="string.python"/>
+		</begin>
+		<end>
+			<pattern regex="&quot;&quot;&quot;" style="string.python"/>
+		</end>
+	</contextPattern>
+	<pattern regex="'[^']*'" style="string.python"/>
+	<pattern regex="&quot;[^&quot;]*&quot;" style="string.python"/>
+	<pattern regex="\b(import|def|class|None|True|False|self|print)\b" style="keyword.python"/>
+	<pattern regex="\b(from|for|in|if|not|return|yield|else|continue)\b" style="keyword.python"/>
+	<pattern regex="\b(elif|break|while|or|and)\b" style="keyword.python"/>
+</language>

@@ -1,0 +1,77 @@
+TODO (Later Releases):
+
+Random Stuff:
+[ ] Preview in browser ((x)HTML)
+[ ] Image viewer
+[ ] Find Symbol (this is the hard one, need cooperation from the language service)
+	[ ] Make it work across languages (css/xhtml/js)
+[ ] Find in files
+[ ] The findbar's toolbar items don't mouseover properly when the 'find what'
+	box has focus (Braden Schultz) - This is a bug in WinForms, I'm not hacking around it.
+[ ] Reordering of document tabs
+[ ] Filetype filter with checkboxes, based on the filetypes we understand
+	[ ] With icons
+	[ ] Automagically generate abbreviated representation for single-line
+[ ] Should be able to delete specific items from "Paste from History"
+
+[ ] Configuration dialog
+[ ] UI to customize syntax highlighting
+[ ] Icon looks crap when shrunk (like, in explorer :)
+[ ] Progress bar during lengthy operations would be nice
+
+
+Editor Features:
+[ ] Copy styled text to clipboard as RTF
+[ ] Dragging text
+[ ] Smarter indent management, tied into the language service
+[ ] Mixed syntax highlighting (CSS / JS embedded in XML)
+[ ] Name the undo actions, and put the description of what the action does on the menu item text
+[ ] Replace
+[ ] Tooltip intellisense
+[ ] Code folding would be nice (Mark)
+[ ] Can't select a completion with the mouse. (Braden Schultz)
+[ ] Coloring of text in the clipboard history window would be "interesting" (Mark)
+[ ] Coalesce suitable undo actions (typing a bunch of chars should become one atomic action in the buffer)
+[ ] Undoing all the way should un-dirty the document
+[ ] Invert colors when selecting (Aaron)
+
+XML:
+[ ] XML schema visualization
+[ ] XML document outline
+[ ] XML Validation
+[ ] XSL
+	[ ] XSL Debugging (MSXML)
+[ ] XPath
+[ ] Better schema caching
+	[ ] Resolve relative URIs to real paths in the project tree
+	[ ] Try to download schemas from the internet, in the background. Have sensible timeouts here.
+[ ] More metadata in cached schemas, so we can provide decent tooltips?
+[ ] XML Intellisense
+	[ ] Complete attribute values (for enumerated hax, eg <link rel="this-is-a-hax">)
+	[ ] Complete entities
+	[ ] Make this all work properly with <xs:include>
+[ ] When completing element names, offer namespaces
+	[ ] When completion is invoked with a namespace already there, just list the contents of that
+		namespace
+[ ] If file moved when open and previous folder that 
+	it was located in is deleted, will break when attempting to save
+
+Javascript:
+[ ] Javascript completion
+
+CSS:
+[ ] CSS value intellisense
+[ ] CSS document outline
+[ ] CSS style preview
+[ ] Jumping between CSS and (x)HTML
+
+
+Other language support:
+[ ] C#
+[ ] PHP
+[ ] JSP
+[ ] Regular expressions (syntax highlight, group labeling, etc)
+
+Common completion/Intellisense features:
+[ ] Code snippets, ala Visual Studio.
+

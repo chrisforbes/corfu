@@ -1,0 +1,41 @@
+/* this is a comment */
+@media print
+{
+}
+
+.foo
+{
+	font-family: Arial;
+	background-image: url(http://foo/foo.jpg);
+}
+
+.bar { one: two; }
+
+.schwartz
+{
+	font-size: 12em;
+}
+
+#photo
+{
+	width: 400px;
+	height: 600px;
+}
+
+@media screen, print
+{
+	#foo
+	{
+	}
+}
+
+@foo { c : x }
+@hax { foo { bar: schwartz } }
+
+@page { bar: schwartz }
+
+@import "foo.css";
+@import url("bluish.css") projection, tv;
+
+@page :first { margin-top: 10cm /* Top margin on first page 10cm */ }
+

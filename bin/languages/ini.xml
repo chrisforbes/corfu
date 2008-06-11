@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<pattern regex=";.*$" style="comment.ini"/>
+	
+	<capturePattern regex="(\[)[^\]]*(\])" 
+		group0="markup.element.ini" 
+		group1="punctuation.ini" 
+		group2="punctuation.ini"/> 
+		
+	<capturePattern regex="^([^=]+)=([^;]*)" 
+		group0="punctuation.ini" 
+		group1="markup.attribute.ini"
+		group2="markup.value.ini"/>
+</language>

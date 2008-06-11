@@ -1,0 +1,13 @@
+This is a sample to demonstrate the features of the TODO list
+
+[ ] This item has not been completed
+[?] This item might be done, but we're not sure.
+[x] This item is definitely done.
+
+The coloring is based on what's in between the square brackets,
+and updates instantly.
+
+Also, if you want to mention some person, put a squiggle before
+their name, like this: ~Jim.
+
+Enjoy using Corfu TODO Lists!!

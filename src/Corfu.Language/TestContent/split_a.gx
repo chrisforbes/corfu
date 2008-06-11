@@ -1,0 +1,8 @@
+﻿-- first part of split grammar
+
+in [noob]
+	/a/ -> [a]
+	/b/ -> [b]
+	
+	/c/ -> [noob.c]
+		enter: []

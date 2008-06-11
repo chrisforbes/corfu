@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<filetypes>
+	<languageservice 
+		assembly="XmlIde.LanguageFramework.dll"
+		languageservice="XmlIde.LanguageFramework.DataDrivenLanguage">
+		<filetype name="Todo List" suffix=".todo" param="/languages/todo.xml"/>
+		<filetype name="JavaScript" suffix=".js" param="/languages/javascript.xml"/>
+		<filetype name="INI File" suffix=".ini" param="/languages/ini.xml"/>
+		<filetype name="Cascading Style Sheet" suffix=".css" param ="/languages/css.xml"/>
+		<filetype name="ABC Notation File" suffix=".abc" param="/languages/abc.xml"/>
+		<filetype name="Delphi Source File" suffix=".pas" param="/languages/delphi.xml"/>
+		<filetype name="Haskell Source File" suffix=".hs" param="/languages/haskell.xml"/>
+		<filetype name="HLSL Source" suffix=".fx" param="/languages/hlsl.xml"/>
+		<filetype name="HLSL Source" suffix=".fxi" param="/languages/hlsl.xml"/>
+		<filetype name="C++ Source" suffix=".cpp" param="/languages/cpp.xml"/>
+		<filetype name="C++ Source" suffix=".cxx" param="/languages/cpp.xml"/>
+		<filetype name="C Source" suffix=".c" param="/languages/cpp.xml"/>
+		<filetype name="C/C++ Header" suffix=".h" param="/languages/cpp.xml"/>
+		<filetype name="Java Source" suffix=".java" param="/languages/java.xml"/>
+		<filetype name="C# Source" suffix=".cs" param="/languages/csharp.xml"/>
+		<filetype name="CIL Source" suffix=".il" param="/languages/cil.xml"/>
+		<filetype name="D Source" suffix=".d" param="/languages/d.xml"/>
+		<filetype name="Python Source" suffix=".py" param="/languages/python.xml"/>
+		<filetype name="Assembly Source" suffix=".s" param="/languages/asm.xml"/>
+		<filetype name="LaTeX Source" suffix=".tex" param="/languages/latex.xml"/>
+	</languageservice>
+
+</filetypes>
+

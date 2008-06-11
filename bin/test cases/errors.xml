@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<!-- valid comment -->
+
+<!- not a valid comment -->
+
+
+<!--
+	A multi-line comment
+-->
+
+<!--  -- another invalid comment -->
+
+<!--
+--  An Error In A multi-line comment
+--
+--  -->
+
+<test>Text</test>
+
+<foo />
+
+fee&lt;fie&gt;foe&amp;fum
+
+<entities where="&entity;" />
+
+Selected Text
+More selected Text
+
+<fum typo%=""></fum>
+
+<![CDATA[   Stuff.......  ]]>
+
+
