@@ -56,6 +56,7 @@
     <Compile Include="Scope.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="LanguageDefinition.grammar" />
     <None Include="TestContent\c.gx" />
     <None Include="TestContent\EmptyLanguage.gx" />
     <None Include="TestContent\ini.gx" />
