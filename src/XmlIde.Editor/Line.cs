@@ -1,42 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using XmlIde.Editor.Stylers;
+using IjwFramework.Types;
+using Corfu.Language;
+using System.Linq;
 
 namespace XmlIde.Editor
 {
 	public enum LineModification
 	{
-		Clean,
-		Saved,
-		Unsaved,
+		Clean, Saved, Unsaved,
 	}
 
 	public class Line
 	{
 		readonly Document document;
 		string text;
-		IEnumerable<Span> spans; 
-		LineModification dirty = LineModification.Clean;
-		public object customData;
+		Pair<string, string> scopeInfo;
 
-		public LineModification Dirty
-		{
-			get { return dirty; }
-			set { dirty = value; }
-		}
-
-		public IEnumerable<Span> Spans
-		{
-			get { return spans; }
-			set
-			{
-				if (value == null)
-					spans = null;
-				else
-					spans = new List<Span>(value);
-			}
-		}
+		public LineModification Dirty { get; set; }
+		public IEnumerable<Span> Spans { get; private set; }
 
 		public Document Document { get { return document; } }
 		public string Text
@@ -45,8 +28,8 @@ namespace XmlIde.Editor
 			set
 			{
 				text = value;
-				spans = null;
-				dirty = LineModification.Unsaved;
+				Spans = null;
+				Dirty = LineModification.Unsaved;
 				document.Dirty = true;
 				document.ResetStylerPosition(Number);
 			}
@@ -73,7 +56,7 @@ namespace XmlIde.Editor
 				throw new ArgumentNullException("document");
 
 			this.text = text;
-			this.dirty = changed;
+			this.Dirty = changed;
 			this.document = document;
 
 			if (changed == LineModification.Unsaved)
@@ -99,22 +82,28 @@ namespace XmlIde.Editor
 			}
 		}
 
-		public int ClampToWidth( int value )
+		void FixTransitionFrom(Line from)
 		{
-			if( value < 0 )
-				return 0;
-			if( value > Text.Length )
-				return Text.Length;
-			return value;
+			var initialScope = (from == null || from.scopeInfo == null)
+				? document.FileType.RootScope : from.scopeInfo.Second;
+
+			scopeInfo = new Pair<string, string>(initialScope, initialScope);
+			Spans = null;
 		}
 
-		public void ReStyle( int lineNumber )
+		public void ReStyle(int lineNumber)
 		{
 			cachedLineNumber = lineNumber;
 
-			document.Styler.FixTransition(document.GetLine(lineNumber - 1), this);
-			spans = spans ?? new List<Span>(document.Styler.GetStyles(this));
-			document.Styler.FixTransition(this, document.GetLine(lineNumber + 1));
+			FixTransitionFrom(document.GetLine(lineNumber - 1));
+
+			var parser = new Parser(GrammarLoader.Grammar, scopeInfo.First);
+			Spans = parser.ParseSpans(text).ToList();
+			scopeInfo.Second = parser.Scope;
+
+			var nextLine = document.GetLine(lineNumber + 1);
+			if (nextLine != null)
+				nextLine.FixTransitionFrom(this);
 		}
 	}
 }

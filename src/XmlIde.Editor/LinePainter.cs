@@ -71,19 +71,20 @@ namespace XmlIde.Editor
 			int dy = 1;
 			float bl = lineOffset + geometry.LineHeight - 2.0f;
 
-			for (float x = offset; x < offset + span.renderCache.Width; x += 2)
+			for (var x = offset; x < offset + span.renderCache.Width; x += 2)
 			{
 				g.DrawLine(pen, x, bl + dy, x + 2, bl - dy);
 				dy = -dy;
 			}
 		}
 
-		public void PaintLine(Line line, RegionManager regionManager, Gutter.Gutter gutter, int firstColumn)
+		public void PaintLine(Line line, Gutter.Gutter gutter, int firstColumn, Document doc)
 		{
-			IEnumerable<Span> spans = regionManager.ApplyRegions(line);
-			int x = 0;
-			float offset = gutter.Width - (firstColumn * geometry.CharWidth);
-			foreach (Span span in SplitSpansForRendering(spans, MaxSpanLength))
+			var x = 0;
+			var offset = gutter.Width - (firstColumn * geometry.CharWidth);
+			var spans = doc.ApplySelectionSpan(line.Spans, line);
+
+			foreach (var span in SplitSpansForRendering(spans, MaxSpanLength))
 			{
 				if (span.renderCache == null)
 					span.renderCache = new RenderCache(span, geometry, line, x);
@@ -94,8 +95,7 @@ namespace XmlIde.Editor
 				offset += span.renderCache.Width;
 				x += span.renderCache.Text.Length;
 
-				if (offset > g.ClipBounds.Right)
-					break;
+				if (offset > g.ClipBounds.Right) break;
 			}
 		}
 

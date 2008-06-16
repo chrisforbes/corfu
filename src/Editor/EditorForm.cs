@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Xml;
+using System.Linq;
 
 using XmlIde.Editor;
 using IjwFramework.Ui;
@@ -19,7 +20,7 @@ namespace Editor
 		StatusStrip statusStrip = new StatusStrip();
 		ToolStripStatusLabel styleLabel = new ToolStripStatusLabel();
 
-		static readonly string baseTitle = "Corfu " + Product.ShortVersion;
+		static readonly string baseTitle = "Corfu-Experimental";// + Product.ShortVersion;
 
 		const AnchorStyles TopEdge = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 		const AnchorStyles ClientArea = TopEdge | AnchorStyles.Bottom;
@@ -87,17 +88,14 @@ namespace Editor
 				i.Enabled = tabStrip.Count > 1;
 		}
 
-		void SetStyleStatus()
-		{
-			styleLabel.Text = Document.Point.Style;
-		}
+		void SetStyleStatus() { styleLabel.Text = Document.Point.Style; }
 
 		void UndoCapabilityChanged()
 		{
-			foreach (ToolStripItem i in enableIfUndo)
+			foreach (var i in enableIfUndo)
 				i.Enabled = Document != null && Document.CanUndo;
 
-			foreach (ToolStripItem i in enableIfRedo)
+			foreach (var i in enableIfRedo)
 				i.Enabled = Document != null && Document.CanRedo;
 		}
 
@@ -124,7 +122,7 @@ namespace Editor
 
 		void LoadFilesFromCommandLine()
 		{
-			foreach (string filename in Config.FilesPassedOnCommandLine())
+			foreach (string filename in Environment.GetCommandLineArgs().Skip(1))
 				LoadDocumentEx(filename);
 		}
 
@@ -135,10 +133,9 @@ namespace Editor
 
 		void HookEnabled(ToolStripItem i, XmlElement e)
 		{
-			if (i == null)
-				return;
+			if (i == null) return;
 
-			string ehook = e.GetAttribute("ehook");
+			var ehook = e.GetAttribute("ehook");
 			if (ehook == "doc")
 				enableIfDocument.Add(i);
 			else if (ehook == "undo")
@@ -153,21 +150,19 @@ namespace Editor
 		{
 			BindFunctions();
 
-			Dictionary<string, Image> images = new Dictionary<string, Image>();
+			var doc = new XmlDocument();
+			doc.Load("/res/ui.xml".AsAbsolute());
 
-			XmlDocument doc = new XmlDocument();
-			doc.Load(Config.GetAbsolutePath("/res/ui.xml"));
+			var images = doc.SelectNodes("/ui/images/image").Cast<XmlElement>().ToDictionary(
+				e => e.GetAttribute("name"),
+				e => Image.FromFile(e.GetAttribute("path").AsAbsolute()));
 
-			foreach (XmlElement e in doc.SelectNodes("/ui/images/image"))
-				images.Add(e.GetAttribute("name"), Image.FromFile(
-					Config.GetAbsolutePath(e.GetAttribute("path"))));
-
-			MenuBuilder menuBuilder = new MenuBuilder(workspace, images);
-			ToolbarBuilder toolbarBuilder = new ToolbarBuilder(workspace, images);
+			var menuBuilder = new MenuBuilder(workspace, images);
+			var toolbarBuilder = new ToolbarBuilder(workspace, images);
 
 			foreach (XmlElement e in doc.SelectNodes("/ui/menu/menu-item"))
 				HookEnabled(menuBuilder.CreateMenu(e.GetAttribute("path"), GetNamedHandler(e.GetAttribute("handler")),
-					e.GetAttribute("image"), Util.ParseShortcutKey(e.GetAttribute("shortcut"))), e);
+					e.GetAttribute("image"), e.GetAttribute("shortcut").ToShortcutKey()), e);
 
 			foreach (XmlElement e in doc.SelectNodes("/ui/toolbar/toolbar-button"))
 				HookEnabled(toolbarBuilder.CreateButton(e.GetAttribute("image"), e.GetAttribute("text"),
@@ -184,23 +179,20 @@ namespace Editor
 
 		static void SaveAs( Document document )
 		{
-			if (document == null)
-				return;
+			if (document == null) return;
 
-			using (SaveFileDialog fd = new SaveFileDialog())
+			using (var fd = new SaveFileDialog())
 			{
 				fd.RestoreDirectory = true;
 				if( document.FilePath != null )
 				{
-					fd.FileName = Util.CanonicalizePath(document.FilePath);
-					if( fd.ShowDialog() != DialogResult.OK )
-						return;
+					fd.FileName = document.FilePath.CanonicalizePath();
+					if( fd.ShowDialog() != DialogResult.OK ) return;
 				}
 				else
 				{
 					fd.FileName = Path.Combine( Config.DefaultSaveLocation, document.Filename );
-					if( fd.ShowDialog() != DialogResult.OK )
-						return;
+					if( fd.ShowDialog() != DialogResult.OK ) return;
 
 					Config.DefaultSaveLocation = Path.GetDirectoryName( fd.FileName );
 				}
@@ -227,7 +219,7 @@ namespace Editor
 
 		void OnDocumentChanged(object sender, EventArgs e)
 		{
-			Document document = tabStrip.Current;
+			var document = tabStrip.Current;
 			editor.Visible = document != null;
 			Document = document;
 
@@ -242,7 +234,7 @@ namespace Editor
 
 			SetWindowTitle(document);
 
-			foreach (ToolStripItem i in enableIfDocument)
+			foreach (var i in enableIfDocument)
 				i.Enabled = document != null;
 		}
 
@@ -253,9 +245,8 @@ namespace Editor
 
 		protected override void OnDragEnter( DragEventArgs dragEvent )
 		{
-			foreach( string s in dragEvent.Data.GetFormats() )
-				if( s == DataFormats.FileDrop )
-					dragEvent.Effect = DragDropEffects.Copy;
+			if (dragEvent.Data.GetFormats().Contains(DataFormats.FileDrop))
+				dragEvent.Effect = DragDropEffects.Copy;
 
 			base.OnDragEnter( dragEvent );
 		}
@@ -274,8 +265,7 @@ namespace Editor
 
 		void ProtectedCheckForModifiedDocuments()
 		{
-			if (inModCheck)
-				return;
+			if (inModCheck) return;
 			inModCheck = true;
 			CheckForModifiedDocuments();
 			inModCheck = false;
@@ -283,23 +273,19 @@ namespace Editor
 
 		void CheckForModifiedDocuments()
 		{
-			List<Document> modified = new List<Document>();
-			foreach (Document d in tabStrip.Documents)
-				if (d.Stale)
-					modified.Add(d);
+			var modified = tabStrip.Documents.Where(d => d.Stale).ToList();
 
 			if (modified.Count == 0)
 				return;
 
-			ExternalChangesDialog ecd = new ExternalChangesDialog(modified);
+			var ecd = new ExternalChangesDialog(modified);
 			if (DialogResult.Cancel == ecd.ShowDialog())
 			{
-				foreach (Document d in modified)
-					d.Stale = false;
+				modified.Do(d => d.Stale = false);
 				return;
 			}
 
-			foreach (Document d in ecd.GetSelectedDocuments())
+			foreach (var d in ecd.GetSelectedDocuments())
 			{
 				string fn = d.FilePath;
 				tabStrip.Close(d, true);

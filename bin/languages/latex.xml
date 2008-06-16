@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<language>
-	<pattern regex="\\[$#%^&amp;_{}]" style="keyword.semantic.latex"/>
-	<pattern regex="%.*$" style="comment.latex"/>
-	<pattern regex="\\.+?\b" style="keyword.latex"/>
-	<pattern regex="\{.*?}" style="string.latex"/>
-	<pattern regex="\$" style="keyword.directive.latex"/>
-</language>

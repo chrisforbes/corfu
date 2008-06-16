@@ -1,57 +1,39 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.Xml;
-using System.Reflection;
-using System.Diagnostics;
-using System.Drawing;
-using System.Windows.Forms;
+using System.Linq;
+using IjwFramework.Types;
 
 namespace XmlIde.Editor
 {
 	public static class Config
 	{
+		public static string AsAbsolute(this string resourceName)
+		{
+			return GetAbsolutePath(resourceName);
+		}
+
 		public static string GetAbsolutePath(string resourceName)
 		{
-			return Path.GetDirectoryName(Environment.GetCommandLineArgs()[0])
-				+ (resourceName.StartsWith("/") || resourceName.StartsWith("\\") ? "" : @"/") + resourceName;
+			return Path.GetDirectoryName(Environment.GetCommandLineArgs().First())
+				+ (resourceName.StartsWith("/") || resourceName.StartsWith("\\") ? "" : "/") + resourceName;
 		}
 
-		public static IEnumerable<string> FilesPassedOnCommandLine()
-		{
-			string[] args = Environment.GetCommandLineArgs();
-			for (int i = 1; i < args.Length; i++)
-				yield return args[i];
-		}
-
-		static Dictionary<string, FileType> fileTypes;
-
-		static Dictionary<string, FileType> FileTypes
-		{
-			get
+		static Lazy<Dictionary<string, FileType>> fileTypes = Lazy.New(() =>
 			{
-				if (fileTypes == null)
-				{
-					fileTypes = new Dictionary<string, FileType>();
-					XmlDocument doc = new XmlDocument();
-					doc.Load(Config.GetAbsolutePath("languages/filetypes.xml"));
-					foreach (XmlElement e in doc.SelectNodes("/filetypes/languageservice"))
-						foreach (XmlElement f in e.SelectNodes("filetype"))
-						{
-							FileType fileType = new FileType(e, f);
-							fileTypes.Add(fileType.Suffix, fileType);
-						}
-				}
+				var doc = new XmlDocument();
+				doc.Load(Config.GetAbsolutePath("languages/filetypes.xml"));
 
-				return fileTypes;
-			}
-		}
+				return doc.SelectNodes("//filetype").Cast<XmlElement>()
+					.Select(e => new FileType(e))
+					.ToDictionary(x => x.Suffix);
+			});
 
 		public static FileType ChooseFileType(string filename)
 		{
-			FileType f;
-			return FileTypes.TryGetValue(Path.GetExtension(filename).ToLowerInvariant(), out f) ? f : null;
+			return fileTypes.Value.ValueOrDefault( Path.GetExtension(filename).ToLowerInvariant(), null ) 
+				?? ChooseFileType( "bogus.txt" );
 		}
 
 		public static string DefaultSaveLocation = 

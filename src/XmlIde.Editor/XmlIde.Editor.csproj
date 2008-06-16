@@ -57,10 +57,10 @@
     <Compile Include="Commands\UntabCommand.cs" />
     <Compile Include="Commands\ReplaceText.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="CustomData.cs" />
     <Compile Include="Document.Styling.cs">
       <DependentUpon>Document.cs</DependentUpon>
     </Compile>
+    <Compile Include="GrammarLoader.cs" />
     <Compile Include="Gutter\DirtyMark.cs" />
     <Compile Include="Document.LoadSave.cs">
       <DependentUpon>Document.cs</DependentUpon>
@@ -76,16 +76,18 @@
     <Compile Include="Gutter\IGutterElement.cs" />
     <Compile Include="Find\Finder.cs" />
     <Compile Include="Find\IFinder.cs" />
-    <Compile Include="ILanguageService.cs" />
     <Compile Include="ILineNavigator.cs" />
     <Compile Include="Gutter\LineNumber.cs" />
     <Compile Include="ITextBuffer.cs" />
     <Compile Include="Find\PrimitiveFinder.cs" />
     <Compile Include="Find\RegexFinder.cs" />
+    <Compile Include="Language\Grammar.cs" />
+    <Compile Include="Language\Parser.cs" />
+    <Compile Include="Language\Rule.cs" />
+    <Compile Include="Language\Scope.cs" />
+    <Compile Include="Region.cs" />
     <Compile Include="RegionManager.cs" />
     <Compile Include="RenderCache.cs" />
-    <Compile Include="ReplaceTextContext.cs" />
-    <Compile Include="Region.cs" />
     <Compile Include="Style.cs" />
     <Compile Include="StyleProvider.cs" />
     <Compile Include="TextGeometry.cs" />
@@ -100,11 +102,9 @@
       <DependentUpon>EditorControl.cs</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Stylers\AbstractStyler.cs" />
     <Compile Include="KeyBindings.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Stylers\PlainTextStyler.cs" />
     <Compile Include="Span.cs" />
     <Compile Include="Caret.cs" />
     <Compile Include="Util.cs" />

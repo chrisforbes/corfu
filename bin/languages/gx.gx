@@ -1,0 +1,8 @@
+-- grammar for these grammar files themselves.
+
+in [source.gx]
+	/--.*$/ -> [comment.single-line]
+	/\/([^\\]|\\.)*\// -> [pattern]			-- yes, this fucking sucks.
+	/\b(in|enter|leave|before|after)\b/ -> [keyword]
+	/->/ -> [keyword]
+	/\[[^\]]*\]/ -> [string]

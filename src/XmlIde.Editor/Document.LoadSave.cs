@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using XmlIde.Editor.Stylers;
 using System.Windows.Forms;
 
 namespace XmlIde.Editor
@@ -13,16 +12,6 @@ namespace XmlIde.Editor
 		readonly FileType fileType;
 
 		public FileType FileType { get { return fileType; } }
-		public ILanguageService LanguageService
-		{
-			get
-			{
-				if (fileType == null)
-					return PlainTextStyler.Instance;
-
-				return fileType.LanguageService ?? PlainTextStyler.Instance;
-			}
-		}
 
 		IEnumerable<string> GetFileContent(string path)
 		{
@@ -63,8 +52,6 @@ namespace XmlIde.Editor
 
 			this.filePath = filePath;
 			this.fileType = Config.ChooseFileType(filePath);
-
-			Styler = LanguageService.Styler;
 
 			if (lines.Count == 0)
 				lines.Add(new Line("", LineModification.Clean, this));

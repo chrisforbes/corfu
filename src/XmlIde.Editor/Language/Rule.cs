@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using IjwFramework.Types;
 using System.Text.RegularExpressions;
+using XmlIde.Editor;
 
 namespace Corfu.Language
 {
@@ -52,7 +53,7 @@ namespace Corfu.Language
 		public string PreEmit(string scope)
 		{
 			if (action == RuleAction.PopBefore)
-				return scope.Substring(0, scope.LastIndexOf(' ') - 1);
+				return scope.Substring(0, scope.LastIndexOf(' '));
 
 			return scope;
 		}
@@ -60,7 +61,7 @@ namespace Corfu.Language
 		public string PostEmit(string scope)
 		{
 			if (action == RuleAction.PopAfter)
-				return scope.Substring(0, scope.LastIndexOf(' ') - 1);
+				return scope.Substring(0, scope.LastIndexOf(' '));
 
 			if (action == RuleAction.Push)
 				return scope + " " + actionScopeName;
@@ -73,7 +74,7 @@ namespace Corfu.Language
 			if (captureScopes != null && captureScopes.Count > 0)
 				throw new NotImplementedException();
 
-			yield return new Span(scope + " " + ScopeName, m.Index, m.Length);
+			yield return new Span(m.Index, m.Length, scope + " " + ScopeName);
 		}
 	}
 }

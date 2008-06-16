@@ -46,24 +46,7 @@ namespace XmlIde.Editor
 			return b.ToString();
 		}
 
-		public static Assembly GetAssembly(string path)
-		{
-			string pathUri = new Uri(path).ToString();
-
-			foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
-				if (a.CodeBase.Equals(pathUri, StringComparison.InvariantCultureIgnoreCase))
-					return a;
-
-
-			return Assembly.LoadFile(path);
-		}
-
-		public static string GetDirectoryName(string s)
-		{
-			return Path.GetDirectoryName(s) ?? s;
-		}
-
-		public static string CanonicalizePath(string s)
+		public static string CanonicalizePath(this string s)
 		{
 			return (s == null) ? null : s.Replace('/', '\\').ToLowerInvariant();
 		}
@@ -73,7 +56,7 @@ namespace XmlIde.Editor
 			return CanonicalizePath(a) == CanonicalizePath(b);
 		}
 
-		public static Keys ParseShortcutKey(string s)
+		public static Keys ToShortcutKey(this string s)
 		{
 			var k = Keys.None;
 
@@ -102,6 +85,24 @@ namespace XmlIde.Editor
 		internal static float MeasureWith(this string s, TextGeometry geom)
 		{
 			return geom.MeasureString(s);
+		}
+
+		public static int Clamp(this int x, int low, int high)
+		{
+			if (x < low) return low;
+			if (x > high) return high;
+			return x;
+		}
+
+		public static void Do<T>(this IEnumerable<T> seq, Action<T> a)
+		{
+			foreach (var t in seq) a(t);
+		}
+
+		public static U ValueOrDefault<T, U>(this Dictionary<T, U> dict, T key, U value)
+		{
+			dict.TryGetValue(key, out value);
+			return value;
 		}
 	}
 }

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using XmlIde.Editor;
 
 namespace Corfu.Language
 {
-	public class Span
+/*	public class Span
 	{
 		public readonly string Scope;
 		public readonly int Start;
@@ -33,7 +34,7 @@ namespace Corfu.Language
 		{
 			return Scope.GetHashCode() ^ Start.GetHashCode() ^ Length.GetHashCode();
 		}
-	}
+	}	*/
 
 	public class Parser
 	{
@@ -62,12 +63,12 @@ namespace Corfu.Language
 
 				if (firstMatch == null)
 				{
-					yield return new Span(scope, offset, text.Length - offset);
+					yield return new Span(offset, text.Length - offset, scope);
 					yield break;
 				}
 
 				if (firstMatch.m.Index > offset)
-					yield return new Span(scope, offset, firstMatch.m.Index - offset);
+					yield return new Span(offset, firstMatch.m.Index - offset, scope);
 
 				scope = firstMatch.p.PreEmit(scope);
 				foreach (var e in firstMatch.p.GetSpans(scope, firstMatch.m))

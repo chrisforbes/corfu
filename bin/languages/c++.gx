@@ -1,4 +1,4 @@
-﻿-- simple subset of C
+-- simple subset of C
 
 -- things to note: while we have a formatting *convention*, 
 -- the tabs etc are not mandatory.
@@ -6,27 +6,31 @@
 -- however, *breaking* lines does affect the semantics, so don't do that.
 -- if you need to split a line, there are other "good" ways to do that.
 
-in [c]
-	/\b(struct|union|enum|int|float|double|long|short|char|wchar_t|void)\b/ -> [typename]
-	/\b(static|const|volatile|auto|register|restrict)\b/ -> [keyword.modifier]
-	/\b(if|while|for|do|switch|goto|continue|break|return)\b/ -> [keyword]
+in [source.c++]
+	/\b(int|float|double|long|short|char|wchar_t|void)\b/ -> [keyword.type]
+	/\b(unsigned|signed)\b/ -> [keyword.type]
+	/\b(virtual|static|const|volatile|auto|register|restrict|mutable)\b/ -> [keyword.modifier]
+	/\b(if|while|for|do|switch|goto|continue|break|return|case|using|namespace)\b/ -> [keyword]
+	/\b(struct|class|template|union|enum)\b/ -> [keyword]
+	
+	/\b(public|private|protected)\b/ -> [keyword.visibility]
 	
 	/\/\/.*$/ -> [comment.single-line]
 	/\/\*/ -> [comment.multi-line]
 		enter: []				-- can omit scope name here, to use the scope name above
 		
-in [c comment.multi-line]
+in [source.c++ comment.multi-line]
 	/\*\// -> [comment.multi-line]
 		leave: before			-- leave: accepts `after` or `before`; this is just
 								-- choosing when to pop the scope. this method is really
 								-- intended for a closing fragment that needs to be
 								-- styled differently
 	
-in [c]
+in [source.c++]
 	-- note that we can open up a scope ANYWHERE and add more stuff to it
 	/"/ -> [string]
 		enter: [string]
 		
-in [c string]		-- note we can use descendant selectors, like in CSS
-	/(?<!\\)(\\\\)*"/ -> []		-- this is the other way: use [] to avoid adding a scope,
-		leave: after			-- and pop the scope after the end of the match
+in [source.c++ string]		-- note we can use descendant selectors, like in CSS
+	/(?<!\\)(\\\\)*"/ -> [source.c++ string]		-- this is the other way: use [] to avoid adding a scope,
+		leave: before			-- and pop the scope after the end of the match

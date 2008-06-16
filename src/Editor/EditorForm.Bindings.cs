@@ -250,10 +250,12 @@ namespace Editor
 
 		void LoadLanguageDefinition()
 		{
-			if (Document.Styler.Definition != null)
-				LoadDocumentEx(Document.Styler.Definition);
-			else
-				MessageBox.Show("No known language definition file for " + Document.Filename);
+		//	if (Document.Styler.Definition != null)
+		//		LoadDocumentEx(Document.Styler.Definition);
+		//	else
+		//		MessageBox.Show("No known language definition file for " + Document.Filename);
+
+			throw new NotImplementedException();
 		}
 
 		void CheckForUpdates()

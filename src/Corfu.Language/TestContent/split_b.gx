@@ -1,9 +1,0 @@
-﻿-- second part of split grammar
-
-in [noob noob.c]
-	/y/ -> [y]
-	/x/ -> []
-		leave: after	-- pop the scope
-
-in [noob.c]
-	/w/ -> [w]

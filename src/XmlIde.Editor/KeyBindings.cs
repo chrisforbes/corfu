@@ -21,7 +21,7 @@ namespace XmlIde.Editor
 			doc.Load(Config.GetAbsolutePath("/res/keybindings.xml"));
 
 			foreach (XmlElement e in doc.SelectNodes("/keybindings/binding"))
-				bindings.Add(Util.ParseShortcutKey(e.GetAttribute("key")), e.GetAttribute("action"));
+				bindings.Add(e.GetAttribute("key").ToShortcutKey(), e.GetAttribute("action"));
 		}
 
 		public void Offer(string name, Action<Keys> command)

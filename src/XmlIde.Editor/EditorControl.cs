@@ -24,14 +24,12 @@ namespace XmlIde.Editor
 				if (document != null)
 				{
 					document.UndoCapabilityChanged -= OnUndoCapabilityChanged;
-					regionContext.Unsubscribe(document);
 					
 					document.BeforeReplace -= InvalidateEditedRegion;
 					document.AfterReplace -= InvalidateEditedRegion;
 				}
 
 				document = value;
-				regionManager.Clear();
 
 				if( document != null )
 				{
@@ -39,7 +37,6 @@ namespace XmlIde.Editor
 					HorizontalScroll.Position = FirstVisibleColumn;
 					HorizontalScroll.Maximum = document.GetMaxLineLength();
 					document.UndoCapabilityChanged += OnUndoCapabilityChanged;
-					regionContext.SubscribeTo(document);
 
 					document.BeforeReplace += InvalidateEditedRegion;
 					document.AfterReplace += InvalidateEditedRegion;
@@ -104,8 +101,6 @@ namespace XmlIde.Editor
 
 		TextGeometry geometry;
 		Gutter.Gutter gutter;
-		protected RegionManager regionManager;
-		ReplaceTextContext regionContext;
 
 		public event EventHandler OnCaretMoved = delegate { };
 
@@ -124,8 +119,6 @@ namespace XmlIde.Editor
 			gutter = new Gutter.Gutter();
 
 			geometry = new TextGeometry(this);
-			regionManager = new RegionManager(this);
-			regionContext = new ReplaceTextContext(regionManager);
 
 			Cursor = Cursors.IBeam;
 
@@ -150,7 +143,7 @@ namespace XmlIde.Editor
 		{
 			base.OnPaint(e);
 
-			if (document == null || document.Lines.Count == 0 || document.Styler == null)
+			if (document == null || document.Lines.Count == 0)
 				return;
 
 			VerticalScroll.Maximum = document.Lines.Count + VerticalScroll.PageSize - 2;
@@ -164,12 +157,12 @@ namespace XmlIde.Editor
 			{
 				if (y > e.ClipRectangle.Top - lineHeight)
 				{
-					LinePainter painter = new LinePainter(e.Graphics, styleProvider, geometry, y);
+					var painter = new LinePainter(e.Graphics, styleProvider, geometry, y);
 
 					if (document.Point.CurrentLine == l)
 						painter.PaintLineBackground();
 
-					painter.PaintLine(l, regionManager, gutter, FirstVisibleColumn);
+					painter.PaintLine(l, gutter, FirstVisibleColumn, document);
 					gutter.Paint(e.Graphics, y, lineHeight, l);
 				}
 
@@ -192,7 +185,7 @@ namespace XmlIde.Editor
 
 		public void EnsureVisible()
 		{
-			int lineNumber = document.ClampLineNumber(document.Point.Line);
+			int lineNumber = document.Point.Line.Clamp(0,document.Lines.Count);
 
 			if (lineNumber < FirstVisibleLine)
 				FirstVisibleLine = lineNumber;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Drawing;
-using XmlIde.Editor.Stylers;
 using IjwFramework.Types;
 
 namespace XmlIde.Editor
@@ -13,7 +12,6 @@ namespace XmlIde.Editor
 		readonly List<Line> lines = new List<Line>();
 		internal IList<Line> Lines { get { return lines; } }
 
-		public readonly Styler Styler;
 		public int FirstVisibleLine, FirstVisibleColumn;
 		Caret point, mark;
 
@@ -129,9 +127,8 @@ namespace XmlIde.Editor
 
 		public void ReloadStyler()
 		{
-			Styler.Reload();
-			foreach (Line l in lines)
-				l.ReStyle(l.Number);
+			GrammarLoader.ReloadGrammar();
+			foreach (Line l in lines) l.ReStyle(l.Number);
 		}
 	}
 }

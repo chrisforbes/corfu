@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using System.Xml;
 using System.Globalization;
-using System.IO;
+using System.Linq;
 using System.Windows.Forms;
-using IjwFramework.Types;
+using System.Xml;
 using IjwFramework.Collections;
+using IjwFramework.Types;
 
 namespace XmlIde.Editor
 {
@@ -47,7 +45,7 @@ namespace XmlIde.Editor
 			if (doc == null || name == null)
 				return DefaultStyle;
 
-			return styleCache[name];
+			return styleCache[name.Split(' ').Last()];
 		}
 
 		Style GetFromXml(string[] frags)
@@ -55,7 +53,7 @@ namespace XmlIde.Editor
 			XmlElement e = (XmlElement)doc.SelectSingleNode("/styles");
 			foreach (string frag in frags)
 			{
-				XmlElement f = (XmlElement)e.SelectSingleNode(string.Format("./scope[@name=\"{0}\"]", frag));
+				XmlElement f = (XmlElement)e.SelectSingleNode("./scope[@name=\"{0}\"]".F(frag));
 				if (f == null)
 					break;
 				e = f;
