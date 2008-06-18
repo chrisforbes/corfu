@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using IjwFramework.Types;
 
 namespace XmlIde.Editor.Find
@@ -19,19 +16,17 @@ namespace XmlIde.Editor.Find
 
 		public bool FindNext(string s)
 		{
-			Pair<Caret, Caret> oldCarets = Caret.Order(document.Point, document.Mark);
-
-			bool wasMatch = impl.FindNext(oldCarets.First.TextAfter, s).First == 0;
+			var oldCarets = Caret.Order(document.Point, document.Mark);
+			var wasMatch = impl.FindNext(oldCarets.First.TextAfter, s).First == 0;
+			var passedStart = false;
 
 			document.Point = oldCarets.Second;
 			document.Mark = document.Point;
 
-			bool passedStart = false;
-
 			while (true)
 			{
-				string w = document.Point.TextAfter ?? "";
-				Pair<int,int> result = impl.FindNext(w, s);
+				var w = document.Point.TextAfter ?? "";
+				var result = impl.FindNext(w, s);
 
 				if (result.First >= 0)
 				{

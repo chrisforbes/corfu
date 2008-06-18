@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using IjwFramework.Types;
 
 namespace XmlIde.Editor.Commands
@@ -11,7 +8,7 @@ namespace XmlIde.Editor.Commands
 		{
 			before = CommandHelper.GetCarets(document);
 			after = CommandHelper.GetCarets(document);
-			Pair<Caret, Caret> sortedBefore = Caret.Order(before);
+			var sortedBefore = Caret.Order(before);
 
 			for (int i = sortedBefore.First.Line; i <= sortedBefore.Second.Line; i++)
 			{

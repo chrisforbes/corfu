@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using IjwFramework.Types;
 
 namespace XmlIde.Editor.Commands
@@ -15,7 +12,7 @@ namespace XmlIde.Editor.Commands
 			after.First.MoveRight();
 			after.Second.MoveRight();
 
-			Pair<Caret, Caret> sortedBefore = Caret.Order(before);
+			var sortedBefore = Caret.Order(before);
 
 			int firstLine = sortedBefore.First.Line;
 			int lastLine = sortedBefore.Second.Line;

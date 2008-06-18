@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using IjwFramework.Types;
 
 namespace XmlIde.Editor.Find
@@ -17,11 +15,8 @@ namespace XmlIde.Editor.Find
 
 		public Pair<int, int> FindNext(string source, string match)
 		{
-			int index = source.IndexOf(match, comparison);
-			if (index < 0)
-				return Finder.NotFound;
-			else
-				return new Pair<int, int>(index, match.Length);
+			var index = source.IndexOf(match, comparison);
+			return (index < 0) ? Finder.NotFound : index.PairedWith(match.Length);
 		}
 	}
 }

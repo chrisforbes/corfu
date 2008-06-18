@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using IjwFramework.Types;
 
 namespace XmlIde.Editor.Commands
 {
-	using CaretPair = Pair<Caret, Caret>;
-
 	abstract class CompositeCommand : ICommand
 	{
 		protected List<ICommand> inner = new List<ICommand>();
-		protected CaretPair before;
-		protected CaretPair after;
+		protected Pair<Caret, Caret> before, after;
 		bool done;
 
 		protected CompositeCommand() {}
