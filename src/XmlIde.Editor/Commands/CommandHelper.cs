@@ -15,7 +15,7 @@ namespace XmlIde.Editor.Commands
 
 		public static Pair<Caret, Caret> GetCarets(ITextBuffer target)
 		{
-			return new Pair<Caret, Caret>(target.Point, target.Mark);
+			return target.Point.PairedWith(target.Mark);
 		}
 	}
 }

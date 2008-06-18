@@ -1,13 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml;
-
 using XmlIde.Editor;
 
 namespace Editor
@@ -23,17 +18,17 @@ namespace Editor
 		{
 			InitializeComponent();
 
-			XmlDocument templates = new XmlDocument();
-			templates.Load( Config.GetAbsolutePath( "languages/NewItemTemplates/templates.xml" ) );
-			foreach( XmlElement e in templates.SelectNodes( "/templates/template" ) )
+			var templates = new XmlDocument();
+			templates.Load( "languages/NewItemTemplates/templates.xml".AsAbsolute() );
+			foreach (XmlElement e in templates.SelectNodes("/templates/template"))
 			{
-				string name = e.GetAttribute( "name" );
-				string file = e.GetAttribute( "file" );
-				string icon = e.GetAttribute( "icon" );
-				string suffix = e.GetAttribute( "suffix" );
-				Image i = Image.FromFile(Config.GetAbsolutePath(icon));
-				imageList1.Images.Add( name, i );
-				listView1.Items.Add( name, name ).Tag = new TemplateToken( file, suffix);
+				var name = e.GetAttribute("name");
+				var file = e.GetAttribute("file");
+				var icon = e.GetAttribute("icon");
+				var suffix = e.GetAttribute("suffix");
+				var i = Image.FromFile(icon.AsAbsolute());
+				imageList1.Images.Add(name, i);
+				listView1.Items.Add(name, name).Tag = new TemplateToken(file, suffix);
 			}
 
 			if( listView1.Items.Count <= 0 )
@@ -57,7 +52,7 @@ namespace Editor
 		{
 			if (SelectedTemplate != null)
 			{
-				string s = string.IsNullOrEmpty(fileNameTextBox.Text) ? "Untitled" : fileNameTextBox.Text;
+				var s = string.IsNullOrEmpty(fileNameTextBox.Text) ? "Untitled" : fileNameTextBox.Text;
 				fileNameTextBox.Text = Path.ChangeExtension(s, SelectedTemplate.Suffix);
 			} 
 

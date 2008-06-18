@@ -4,7 +4,7 @@ namespace XmlIde.Editor
 {
 	public class Region
 	{
-		public Caret Start, End;
+		public readonly Caret Start, End;
 
 		public Region(Caret start, Caret end)
 		{
@@ -21,14 +21,10 @@ namespace XmlIde.Editor
 				if (Start.Line < End.Line)
 				{
 					var sb = new StringBuilder();
-					sb.Append(Start.TextAfter);
-					sb.Append('\n');
+					sb.AppendLine(Start.TextAfter);
 
 					for (int i = Start.Line + 1; i < End.Line; i++)
-					{
-						sb.Append(Start.Document.Lines[i].Text);
-						sb.Append('\n');
-					}
+						sb.AppendLine(Start.Document.Lines[i].Text);
 
 					sb.Append(End.TextBefore);
 

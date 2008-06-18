@@ -1,14 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Reflection;
 using System.Windows.Forms;
-using System.Xml;
-using System.IO;
-using System.Drawing;
-using System.Globalization;
 using IjwFramework.Types;
-using System.Linq;
+using System.Drawing;
 
 namespace XmlIde.Editor
 {
@@ -103,6 +98,13 @@ namespace XmlIde.Editor
 		{
 			dict.TryGetValue(key, out value);
 			return value;
+		}
+
+		public static IEnumerable<T> JustThis<T>(this T t) { yield return t; }
+		
+		public static Pair<A, B> PairedWith<A, B>(this A a, B b)
+		{
+			return new Pair<A, B>(a, b);
 		}
 	}
 }

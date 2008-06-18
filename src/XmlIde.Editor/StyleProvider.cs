@@ -12,15 +12,12 @@ namespace XmlIde.Editor
 	class StyleProvider
 	{
 		readonly static Style DefaultStyle = new Style(SystemBrushes.WindowText, null, Decoration.None);
-		readonly static string XmlPath = Config.GetAbsolutePath("/res/styles.xml");
+		readonly static string XmlPath = "/res/styles.xml".AsAbsolute();
 
 		XmlDocument doc = null;
 		Cache<string, Style> styleCache;
 
-		public StyleProvider() 
-		{ 
-			Reload(); 
-		}
+		public StyleProvider() { Reload(); }
 
 		public void Reload()
 		{
@@ -42,20 +39,17 @@ namespace XmlIde.Editor
 
 		public Style GetStyle(string name)
 		{
-			if (doc == null || name == null)
-				return DefaultStyle;
-
-			return styleCache[name.Split(' ').Last()];
+			return (doc == null || name == null)
+				? DefaultStyle : styleCache[name.Split(' ').Last()];
 		}
 
 		Style GetFromXml(string[] frags)
 		{
-			XmlElement e = (XmlElement)doc.SelectSingleNode("/styles");
+			var e = (XmlElement)doc.SelectSingleNode("/styles");
 			foreach (string frag in frags)
 			{
-				XmlElement f = (XmlElement)e.SelectSingleNode("./scope[@name=\"{0}\"]".F(frag));
-				if (f == null)
-					break;
+				var f = (XmlElement)e.SelectSingleNode("./scope[@name=\"{0}\"]".F(frag));
+				if (f == null) break;
 				e = f;
 			}
 

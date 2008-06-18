@@ -1,8 +1,7 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 using XmlIde.Editor.Commands;
-using System.Drawing;
-using IjwFramework.Types;
 
 namespace XmlIde.Editor
 {
@@ -12,27 +11,27 @@ namespace XmlIde.Editor
 
 		void SetKeyBindings()
 		{
-			keyBindings.Offer("MoveLeft", SelectionMovement(delegate { document.MovePoint(Direction.Left); }));
-			keyBindings.Offer("MoveRight", SelectionMovement(delegate { document.MovePoint(Direction.Right); }));
-			keyBindings.Offer("MoveUp", SelectionMovement(delegate { document.MovePoint(Direction.Up); }));
-			keyBindings.Offer("MoveDown", SelectionMovement(delegate { document.MovePoint(Direction.Down); }));
+			keyBindings.Offer("MoveLeft", SelectionMovement(_ => document.MovePoint(Direction.Left)));
+			keyBindings.Offer("MoveRight", SelectionMovement(_ => document.MovePoint(Direction.Right)));
+			keyBindings.Offer("MoveUp", SelectionMovement(_ => document.MovePoint(Direction.Up)));
+			keyBindings.Offer("MoveDown", SelectionMovement(_ => document.MovePoint(Direction.Down)));
 
-			keyBindings.Offer("MoveByWordLeft", SelectionMovement(delegate { MoveByWord(new ReverseLineNavigator(document)); }));
-			keyBindings.Offer("MoveByWordRight", SelectionMovement(delegate { MoveByWord(new ForwardLineNavigator(document)); }));
+			keyBindings.Offer("MoveByWordLeft", SelectionMovement(_ => MoveByWord(new ReverseLineNavigator(document))));
+			keyBindings.Offer("MoveByWordRight", SelectionMovement(_ => MoveByWord(new ForwardLineNavigator(document))));
 
-			keyBindings.Offer("MoveDocumentStart", SelectionMovement(delegate { document.MovePoint(Direction.DocumentStart); }));
-			keyBindings.Offer("MoveDocumentEnd", SelectionMovement(delegate { document.MovePoint(Direction.DocumentEnd); }));
+			keyBindings.Offer("MoveDocumentStart", SelectionMovement(_ => document.MovePoint(Direction.DocumentStart)));
+			keyBindings.Offer("MoveDocumentEnd", SelectionMovement(_ => document.MovePoint(Direction.DocumentEnd)));
 
-			keyBindings.Offer("MoveLineStart", SelectionMovement(delegate { document.MovePoint(Direction.LineStart); }));
-			keyBindings.Offer("MoveLineEnd", SelectionMovement(delegate { document.MovePoint(Direction.LineEnd); }));
+			keyBindings.Offer("MoveLineStart", SelectionMovement(_ => document.MovePoint(Direction.LineStart)));
+			keyBindings.Offer("MoveLineEnd", SelectionMovement(_ => document.MovePoint(Direction.LineEnd)));
 
-			keyBindings.Offer("MoveLineUp", SelectionMovement(delegate { document.MovePoint(Direction.Up, VisibleLines); }));
-			keyBindings.Offer("MoveLineDown", SelectionMovement(delegate { document.MovePoint(Direction.Down, VisibleLines); }));
-			keyBindings.Offer("Unselect", delegate { document.Mark = document.Point; });
-			keyBindings.Offer("ScrollUp", delegate { FirstVisibleLine = document.ClampLineNumber(FirstVisibleLine - 1); });
-			keyBindings.Offer("ScrollDown", delegate { FirstVisibleLine = document.ClampLineNumber(FirstVisibleLine + 1); });
+			keyBindings.Offer("MoveLineUp", SelectionMovement(_ => document.MovePoint(Direction.Up, VisibleLines)));
+			keyBindings.Offer("MoveLineDown", SelectionMovement(_ => document.MovePoint(Direction.Down, VisibleLines)));
+			keyBindings.Offer("Unselect", _ => document.Mark = document.Point);
+			keyBindings.Offer("ScrollUp", _ => FirstVisibleLine = document.ClampLineNumber(FirstVisibleLine - 1));
+			keyBindings.Offer("ScrollDown", _ => FirstVisibleLine = document.ClampLineNumber(FirstVisibleLine + 1));
 
-			keyBindings.Offer("Delete", delegate
+			keyBindings.Offer("Delete", _ =>
 			{
 				if (document.Mark == document.Point)
 					document.Apply(new OneSidedDelete(document, false));
@@ -40,7 +39,7 @@ namespace XmlIde.Editor
 					document.Apply(new ReplaceText(document, null));
 			});
 
-			keyBindings.Offer("KillLine", delegate
+			keyBindings.Offer("KillLine", _ =>
 			{
 				document.MovePoint(Direction.AbsoluteLineStart);
 				document.Mark = document.Point;
@@ -55,7 +54,7 @@ namespace XmlIde.Editor
 				document.Apply(new ReplaceText(document, null));
 			});
 
-			keyBindings.Offer("Indent", delegate
+			keyBindings.Offer("Indent", _ =>
 			{
 				if (document.Point.Line != document.Mark.Line)
 					document.Apply(new IndentBlockCommand(document));
@@ -63,7 +62,7 @@ namespace XmlIde.Editor
 					document.Apply(new ReplaceText(document, "\t"));
 			});
 
-			keyBindings.Offer("Unindent", delegate
+			keyBindings.Offer("Unindent", _ =>
 			{
 				if (document.Point.Line != document.Mark.Line)
 					document.Apply(new UnindentBlockCommand(document));
@@ -72,7 +71,7 @@ namespace XmlIde.Editor
 			});
 
 			keyBindings.Offer("RefreshStyles",
-			delegate
+			_ =>
 			{
 				keyBindings.Reload();
 				styleProvider.Reload();
@@ -103,7 +102,7 @@ namespace XmlIde.Editor
 
 		Action<Keys> SelectionMovement(Action<Keys> d)
 		{
-			return delegate(Keys k)
+			return k =>
 			{
 				InvalidateSelectedRegion(document.Selection);
 
@@ -180,16 +179,19 @@ namespace XmlIde.Editor
 
 		protected virtual void HandleMouse(MouseEventArgs e, bool updateMark)
 		{
+			InvalidateSelectedRegion(document.Selection);
+
 			if (e.Button == MouseButtons.Left && isSelecting)
 			{
 				Point location = GetVirtualPosition(e.Location);
 				document.Point = Caret.AtVirtualPosition(document, location.X, location.Y);
 
-				if (updateMark)
-					document.Mark = document.Point;
+				if (updateMark)	document.Mark = document.Point;
 
 				EnsureVisible();
 			}
+
+			InvalidateSelectedRegion(document.Selection);
 		}
 
 		bool isSelecting;

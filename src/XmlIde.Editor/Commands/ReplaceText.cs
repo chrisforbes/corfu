@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
 using IjwFramework.Types;
 
 namespace XmlIde.Editor.Commands
@@ -13,8 +10,7 @@ namespace XmlIde.Editor.Commands
 		CaretPair before, after;
 		string textBefore, textAfter;
 
-		bool done;
-		bool autoIndent;
+		bool done, autoIndent;
 
 		public ReplaceText(ITextBuffer document, string replacement, bool autoIndent)
 		{

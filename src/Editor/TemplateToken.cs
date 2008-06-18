@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using XmlIde.Editor;
 
 namespace Editor
@@ -14,16 +11,12 @@ namespace Editor
 		public TemplateToken(string template, string suffix)
 		{
 			this.suffix = suffix;
-			this.template = Config.GetAbsolutePath(
-				string.IsNullOrEmpty(template) ? DefaultTemplate : template);
+			this.template = (string.IsNullOrEmpty(template) ? DefaultTemplate : template).AsAbsolute();
 		}
 
 		public Document CreateInstance(string filename)
 		{
-			Document d = new Document(template, true);
-			d.FilePath = filename;
-
-			return d;
+			return new Document(template, true) { FilePath = filename };
 		}
 	}
 }

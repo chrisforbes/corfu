@@ -1,7 +1,7 @@
 using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Drawing;
 
 namespace XmlIde.Editor
 {
@@ -48,13 +48,13 @@ namespace XmlIde.Editor
 				location = value;
 				SetCaretPos(value.X, value.Y);
 
-				LocationChanged(this, EventArgs.Empty);
+				if (LocationChanged != null) LocationChanged();
 			}
 
 			get { return location; }
 		}
 
-		public event EventHandler<EventArgs> LocationChanged = delegate { };
+		public event Action LocationChanged;
 
 		[DllImport("User32.dll")]
 		static extern int CreateCaret(IntPtr handle, IntPtr bitmap, int width, int height);

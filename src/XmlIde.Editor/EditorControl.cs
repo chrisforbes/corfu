@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using XmlIde.Editor.Gutter;
-using System.Xml;
-using System.Reflection;
+using System.Linq;
+using System.Windows.Forms;
 using IjwFramework.Ui;
 
 namespace XmlIde.Editor
@@ -18,13 +14,11 @@ namespace XmlIde.Editor
 			get { return document; }
 			set
 			{
-				if (document == value)
-					return;
+				if (document == value) return;
 
 				if (document != null)
 				{
 					document.UndoCapabilityChanged -= OnUndoCapabilityChanged;
-					
 					document.BeforeReplace -= InvalidateEditedRegion;
 					document.AfterReplace -= InvalidateEditedRegion;
 				}
@@ -65,9 +59,9 @@ namespace XmlIde.Editor
 		StyleProvider styleProvider = new StyleProvider();
 		protected ViewCaret caret;
 
-		public event MethodInvoker UndoCapabilityChanged = delegate { };
+		public event Action UndoCapabilityChanged;
 
-		void OnUndoCapabilityChanged() { UndoCapabilityChanged(); }
+		void OnUndoCapabilityChanged() { if (UndoCapabilityChanged != null) UndoCapabilityChanged(); }
 
 		int FirstVisibleLine
 		{
@@ -102,7 +96,7 @@ namespace XmlIde.Editor
 		TextGeometry geometry;
 		Gutter.Gutter gutter;
 
-		public event EventHandler OnCaretMoved = delegate { };
+		public event Action OnCaretMoved = () => { };
 
 		public EditorControl()
 		{
@@ -115,7 +109,7 @@ namespace XmlIde.Editor
 			Font = new Font("Lucida Console", 9.0f);
 
 			caret = new ViewCaret(this);
-			caret.LocationChanged += delegate { OnCaretMoved(this, EventArgs.Empty); };
+			caret.LocationChanged += () => OnCaretMoved();
 			gutter = new Gutter.Gutter();
 
 			geometry = new TextGeometry(this);
@@ -124,8 +118,8 @@ namespace XmlIde.Editor
 
 			SetKeyBindings();
 
-			HorizontalScroll.Scroll += delegate(object sender, ScrollEventArgs e) { FirstVisibleColumn = e.NewValue; };
-			VerticalScroll.Scroll += delegate(object sender, ScrollEventArgs e) { FirstVisibleLine = e.NewValue; };
+			HorizontalScroll.Scroll += (_, e) => FirstVisibleColumn = e.NewValue;
+			VerticalScroll.Scroll += (_, e) => FirstVisibleLine = e.NewValue;
 
 			HorizontalScroll.PageSize = 10;
 		}
@@ -135,16 +129,15 @@ namespace XmlIde.Editor
 			base.OnParentChanged(e);
 
 			Form f = FindForm();
-			f.Activated += delegate { caret.Visible = true; };
-			f.Deactivate += delegate { caret.Visible = false; };
+			f.Activated += (_,_2) => caret.Visible = true;
+			f.Deactivate += (_,_2) => caret.Visible = false;
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
 
-			if (document == null || document.Lines.Count == 0)
-				return;
+			if (document == null || document.Lines.Count == 0) return;
 
 			VerticalScroll.Maximum = document.Lines.Count + VerticalScroll.PageSize - 2;
 
@@ -153,7 +146,7 @@ namespace XmlIde.Editor
 			int y = 0;
 			int lineHeight = Font.Height;
 
-			foreach (Line l in GetVisibleLines())
+			foreach (var l in document.Lines.Skip(FirstVisibleLine).Take(VisibleLines))
 			{
 				if (y > e.ClipRectangle.Top - lineHeight)
 				{
@@ -201,13 +194,10 @@ namespace XmlIde.Editor
 
 		int VisibleLines { get { return ClientSize.Height / Font.Height - 1; } }
 		int VisibleColumns { get { return (int)(ClientSize.Width  / geometry.CharWidth - 3); } }
-		int LastVisibleLine { get { return document.ClampLineNumber(FirstVisibleLine + VisibleLines + 2); } }
-
-		IEnumerable<Line> GetVisibleLines()
+		
+		int LastVisibleLine
 		{
-			int last = LastVisibleLine;
-			for (int n = FirstVisibleLine; n <= last; n++)
-				yield return document.Lines[n];
+			get { return (FirstVisibleLine + VisibleLines + 2).Clamp(0, document.Lines.Count - 1); }
 		}
 	}
 }

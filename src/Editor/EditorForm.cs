@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 using System.IO;
-using System.Xml;
 using System.Linq;
-
-using XmlIde.Editor;
+using System.Windows.Forms;
+using System.Xml;
 using IjwFramework.Ui;
-using IjwFramework;
+using XmlIde.Editor;
 
 namespace Editor
 {
@@ -61,14 +59,14 @@ namespace Editor
 			tabStrip.Changed += delegate { DocumentCountChanged(); OnDocumentChanged(this, EventArgs.Empty); };
 			OnDocumentChanged(null, EventArgs.Empty);
 
-			editor.UndoCapabilityChanged += delegate { UndoCapabilityChanged(); };
+			editor.UndoCapabilityChanged += UndoCapabilityChanged;
 			UndoCapabilityChanged();
 			DocumentCountChanged();
 
 			LoadFilesFromCommandLine();
 
-			Activated += delegate { ProtectedCheckForModifiedDocuments(); };
-			editor.OnCaretMoved += delegate { SetStyleStatus(); };
+			Activated += (_, e) => ProtectedCheckForModifiedDocuments();
+			editor.OnCaretMoved += SetStyleStatus;
 
 			Visible = true;
 

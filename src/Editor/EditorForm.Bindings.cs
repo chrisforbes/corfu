@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
-using System.IO;
-using XmlIde.Editor.Commands;
-using XmlIde.Editor;
-using IjwFramework.Types;
 using Ijw.Updates;
 using IjwFramework;
+using IjwFramework.Types;
+using XmlIde.Editor;
+using XmlIde.Editor.Commands;
 
 namespace Editor
 {
@@ -18,7 +16,6 @@ namespace Editor
 		void BindFunctions()
 		{
 			bindableFunctions.Add("New", New);
-		//	bindableFunctions.Add("NewProject", NewProject);
 			bindableFunctions.Add("Open", Open);
 			bindableFunctions.Add("Save", Save);
 			bindableFunctions.Add("CloseFile", CloseFile);
@@ -39,7 +36,6 @@ namespace Editor
 			bindableFunctions.Add("PasteFromHistory", PasteFromHistory);
 			bindableFunctions.Add("SwapMarkAndPoint", SwapMarkAndPoint);
 			bindableFunctions.Add("ReloadStylers", ReloadStylers);
-			bindableFunctions.Add("LoadLanguageDefinition", LoadLanguageDefinition);
 			bindableFunctions.Add("CheckForUpdates", CheckForUpdates);
 		}
 
@@ -75,7 +71,7 @@ namespace Editor
 
 		void PasteFromHistory()
 		{
-			ClipboardHistory dialog = new ClipboardHistory(clipboardHistory);
+			var dialog = new ClipboardHistory(clipboardHistory);
 			if (DialogResult.OK == dialog.ShowDialog())
 			{
 				Document.Apply(new ReplaceText(Document, dialog.SelectedItem.First.Replace("\r\n", "\n"), false));
@@ -87,7 +83,7 @@ namespace Editor
 
 		void New()
 		{
-			NewItemForm newItemForm = new NewItemForm();
+			var newItemForm = new NewItemForm();
 
 			if( newItemForm.ShowDialog() != DialogResult.OK )
 				return;
@@ -97,15 +93,13 @@ namespace Editor
 
 		void Open()
 		{
-			using (OpenFileDialog fd = new OpenFileDialog())
+			using (var fd = new OpenFileDialog())
 			{
 				fd.RestoreDirectory = true;
 				fd.Multiselect = true;
 
-				if (fd.ShowDialog() != DialogResult.OK)
-					return;
-
-				OpenFiles(fd.FileNames);
+				if (fd.ShowDialog() == DialogResult.OK)
+					OpenFiles(fd.FileNames);
 			}
 		}
 
@@ -114,17 +108,15 @@ namespace Editor
 			if (Document == null)
 				return;
 
-			if( Document.Mark == Document.Point )
+			if (Document.Mark == Document.Point)
 			{
-				Document.MovePoint( Direction.AbsoluteLineStart );
+				Document.MovePoint(Direction.AbsoluteLineStart);
 				Document.Mark = Document.Point;
-				Document.MovePoint( Direction.Down );
-				CopySelection();
+				Document.MovePoint(Direction.Down);
 			}
-			else
-				CopySelection();
 
-			Document.Apply( new ReplaceText( Document, null ) );
+			CopySelection();
+			Document.Apply(new ReplaceText(Document, null));
 			editor.Invalidate();
 		}
 
@@ -148,11 +140,11 @@ namespace Editor
 
 		void CopySelection()
 		{
-			string s = Document.Selection.Content;
+			var s = Document.Selection.Content;
 			if( string.IsNullOrEmpty( s ) )
 				return;
 
-			Pair<string, string> historyItem = new Pair<string, string>( s, Document.Filename );
+			var historyItem = s.PairedWith(Document.Filename);
 
 			clipboardHistory.Remove( historyItem );
 			clipboardHistory.Insert( 0, historyItem );
@@ -246,16 +238,6 @@ namespace Editor
 				d.ReloadStyler();
 
 			editor.Invalidate();
-		}
-
-		void LoadLanguageDefinition()
-		{
-		//	if (Document.Styler.Definition != null)
-		//		LoadDocumentEx(Document.Styler.Definition);
-		//	else
-		//		MessageBox.Show("No known language definition file for " + Document.Filename);
-
-			throw new NotImplementedException();
 		}
 
 		void CheckForUpdates()

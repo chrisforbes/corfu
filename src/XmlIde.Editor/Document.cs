@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Drawing;
 using IjwFramework.Types;
 
 namespace XmlIde.Editor
@@ -38,8 +35,7 @@ namespace XmlIde.Editor
 
 		internal int ClampLineNumber(int value)
 		{
-			if (value < 0)
-				return 0;
+			if (value < 0)	return 0;
 
 			if (value >= lines.Count)
 				return lines.Count - 1;

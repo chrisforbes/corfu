@@ -1,42 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using XmlIde.Editor;
 
 namespace Corfu.Language
 {
-/*	public class Span
-	{
-		public readonly string Scope;
-		public readonly int Start;
-		public readonly int Length;
-
-		public Span( string scope, int start, int length )
-		{
-			Scope = scope;
-			Start = start;
-			Length = length;
-		}
-
-		public override string ToString()
-		{
-			return "({0}..{1} -> {2})".F(Start, Start + Length, Scope);
-		}
-
-		public override bool Equals(object obj)
-		{
-			var s = (Span)obj;
-			return (s != null) && (s.Scope == Scope) && (s.Start == Start) && (s.Length == Length);
-		}
-
-		public override int GetHashCode()
-		{
-			return Scope.GetHashCode() ^ Start.GetHashCode() ^ Length.GetHashCode();
-		}
-	}	*/
-
-	public class Parser
+	class Parser
 	{
 		string scope;
 		Grammar g;

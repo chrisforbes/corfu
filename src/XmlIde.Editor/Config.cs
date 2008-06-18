@@ -23,7 +23,7 @@ namespace XmlIde.Editor
 		static Lazy<Dictionary<string, FileType>> fileTypes = Lazy.New(() =>
 			{
 				var doc = new XmlDocument();
-				doc.Load(Config.GetAbsolutePath("languages/filetypes.xml"));
+				doc.Load("languages/filetypes.xml".AsAbsolute());
 
 				return doc.SelectNodes("//filetype").Cast<XmlElement>()
 					.Select(e => new FileType(e))

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Text.RegularExpressions;
-using IjwFramework.Types;
+using System.Linq;
 using IjwFramework.Collections;
+using IjwFramework.Types;
+using XmlIde.Editor;
 
 namespace Corfu.Language
 {
@@ -22,7 +21,7 @@ namespace Corfu.Language
 
 		public Grammar() { }
 
-		public void AddLanguage( string filename )
+		public Grammar AddLanguage( string filename )
 		{
 			var currentScopes = new List<Scope>();
 			Rule rule = null;
@@ -77,6 +76,8 @@ namespace Corfu.Language
 					}
 				}
 			}
+
+			return this;
 		}
 
 		public IEnumerable<Scope> Scopes { get { return scopes.Values; } }
@@ -139,15 +140,6 @@ namespace Corfu.Language
 			return Scopes
 				.Where(x => (x.Name == scope) || x.Name.EndsWith(' ' + scope))
 				.SelectMany(x => x.Rules);
-		}
-	}
-
-	static class Extensions
-	{
-		public static string F(this string s, params object[] args) { return string.Format(s, args); }
-		public static Pair<A,B> PairedWith<A,B>( this A a, B b )
-		{
-			return new Pair<A,B>(a,b);
 		}
 	}
 }

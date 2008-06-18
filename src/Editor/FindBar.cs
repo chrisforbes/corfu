@@ -12,57 +12,60 @@ namespace Editor
 	{
 		FindBarTextBox ec;
 		EditorControl editor;
-		CheckBox RegExCheckBox = new CheckBox();
-		CheckBox CaseSensitivityCheckBox = new CheckBox();
+		CheckBox RegExCheckBox;
+		CheckBox CaseSensitivityCheckBox;
 
 		public FindBar(ToolStripContainer workspace, EditorControl editor)
 		{
 			this.editor = editor;
 
-			Image cancelImage = Image.FromFile(Config.GetAbsolutePath("/res/critical.png"));
-			Image goImage = Image.FromFile(Config.GetAbsolutePath("/res/findnexths.png"));
+			var cancelImage = Image.FromFile("/res/critical.png".AsAbsolute());
+			var goImage = Image.FromFile("/res/findnexths.png".AsAbsolute());
 
 			workspace.BottomToolStripPanel.Controls.Add(this);
 			Visible = false;
 			Left = workspace.LeftToolStripPanel.Width;
 
-			Items.Add("", cancelImage, delegate { Visible = false; });
+			Items.Add("", cancelImage, (_, e) => Visible = false);
 			
 			Items.Add(new ToolStripLabel("Find What:"));
 
-			ec = new FindBarTextBox();
-			ec.Width = 300;
-			ec.Dismissed += delegate
-			{
-				Hide();
-				editor.Focus();
-			};
+			ec = new FindBarTextBox() { Width = 300 };
+			ec.Dismissed += () => { Hide(); editor.Focus(); };
+			ec.Accepted += () => { DoFind(); };
 
-			ec.Accepted += delegate { DoFind(); };
-
-			ToolStripControlHost i = new ToolStripControlHost(ec);
-			i.AutoSize = false;
-			i.Width = ec.Width;
+			var i = new ToolStripControlHost(ec) { AutoSize = false, Width = ec.Width };
 			Items.Add(i);
 
-			Items.Add(new ToolStripButton("", goImage, delegate { DoFind(); }));
+			Items.Add(new ToolStripButton("", goImage, (_, e) => DoFind()));
 
-			RegExCheckBox.Text = "Regular Expression";
-			RegExCheckBox.AutoSize = false;
-			RegExCheckBox.Width = 130;
-			RegExCheckBox.Checked = false;
-			RegExCheckBox.BackColor = Color.Transparent;
+			RegExCheckBox = new CheckBox()
+			{
+				Text = "Regular Expression",
+				AutoSize = false,
+				Width = 130,
+				Checked = false,
+				BackColor = Color.Transparent,
+			};
 
-			CaseSensitivityCheckBox.Text = "Case Sensitive";
-			CaseSensitivityCheckBox.Checked = false;
-			CaseSensitivityCheckBox.BackColor = Color.Transparent;
+			CaseSensitivityCheckBox = new CheckBox()
+			{
+				Text = "Case Sensitive",
+				Checked = false,
+				BackColor = Color.Transparent,
+			};
 
-			ToolStripControlHost RegExHost = new ToolStripControlHost(RegExCheckBox);
-			RegExHost.AutoSize = false;
-			RegExHost.Width = RegExCheckBox.Width;
-			ToolStripControlHost CaseHost = new ToolStripControlHost(CaseSensitivityCheckBox);
-			CaseHost.AutoSize = false;
-			CaseHost.Width = CaseSensitivityCheckBox.Width;
+			var RegExHost = new ToolStripControlHost(RegExCheckBox)
+			{
+				AutoSize = false,
+				Width = RegExCheckBox.Width
+			};
+
+			var CaseHost = new ToolStripControlHost(CaseSensitivityCheckBox)
+			{
+				AutoSize = false,
+				Width = CaseSensitivityCheckBox.Width
+			};
 
 			Items.Add(RegExHost);
 			Items.Add(CaseHost);
@@ -80,13 +83,11 @@ namespace Editor
 			if (editor.Document == null)
 				throw new InvalidOperationException("find without a document");
 
-			IFinder f;
-			if (RegExCheckBox.Checked)
-				f = new RegexFinder(CaseSensitivityCheckBox.Checked);
-			else
-				f = new PrimitiveFinder(CaseSensitivityCheckBox.Checked);
+			var f = RegExCheckBox.Checked 
+				? (IFinder) new RegexFinder(CaseSensitivityCheckBox.Checked)
+				: new PrimitiveFinder(CaseSensitivityCheckBox.Checked);
 
-			Finder finder = new Finder(editor.Document, f);
+			var finder = new Finder(editor.Document, f);
 			if (!finder.FindNext(ec.Text))
 				MessageBox.Show("The current document does not contain `{0}`".F(ec.Text));
 			else

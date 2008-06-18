@@ -1,16 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using IjwFramework.Types;
-using Corfu.Language;
 using System.Linq;
+using Corfu.Language;
+using IjwFramework.Types;
 
 namespace XmlIde.Editor
 {
-	public enum LineModification
-	{
-		Clean, Saved, Unsaved,
-	}
+	public enum LineModification { Clean, Saved, Unsaved, }
 
 	public class Line
 	{

@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
-using System.Drawing.Drawing2D;
+using System.Linq;
 
 namespace XmlIde.Editor
 {
@@ -23,14 +21,14 @@ namespace XmlIde.Editor
 
 		public void PaintLineBackground()
 		{
-			Brush b = styleProvider.GetStyle("special.current-line").background;
+			var b = styleProvider.GetStyle("special.current-line").background;
 			if (b != null)
 				g.FillRectangle(b, g.ClipBounds.Left, lineOffset, g.ClipBounds.Width, geometry.LineHeight);
 		}
 
 		void PaintSpan(Span span, float offset)
 		{
-			Style style = styleProvider.GetStyle(span.Style);
+			var style = styleProvider.GetStyle(span.Style);
 			if (style.background != null)
 				g.FillRectangle(style.background, offset, lineOffset, span.renderCache.Width, geometry.LineHeight);
 
@@ -38,10 +36,6 @@ namespace XmlIde.Editor
 
 			switch (style.decoration)
 			{
-				case Decoration.Outline:
-					PaintBoxAroundSpan(span, offset);
-					break;
-
 				case Decoration.RedSquiggle:
 					PaintSquigglyUnderline(span, offset, Pens.Red);
 					break;
@@ -53,16 +47,6 @@ namespace XmlIde.Editor
 				case Decoration.BlueSquiggle:
 					PaintSquigglyUnderline(span, offset, Pens.Blue);
 					break;
-			}
-		}
-
-		void PaintBoxAroundSpan(Span span, float offset)
-		{
-			using (Pen p = new Pen(Color.CadetBlue))
-			{
-				p.DashStyle = DashStyle.Dot;
-				p.Alignment = PenAlignment.Outset;
-				g.DrawRectangle(p, offset, lineOffset, span.renderCache.Width, geometry.LineHeight);
 			}
 		}
 
@@ -84,7 +68,7 @@ namespace XmlIde.Editor
 			var offset = gutter.Width - (firstColumn * geometry.CharWidth);
 			var spans = doc.ApplySelectionSpan(line.Spans, line);
 
-			foreach (var span in SplitSpansForRendering(spans, MaxSpanLength))
+			foreach (var span in SplitSpansForRendering(spans))
 			{
 				if (span.renderCache == null)
 					span.renderCache = new RenderCache(span, geometry, line, x);
@@ -101,15 +85,10 @@ namespace XmlIde.Editor
 
 		const int MaxSpanLength = 80;
 
-		static IEnumerable<Span> SplitSpansForRendering(IEnumerable<Span> src, int maxSpanLength)
+		static IEnumerable<Span> SplitSpansForRendering(IEnumerable<Span> src)
 		{
-			foreach (Span s in src)
-			{
-				if (s.Length < maxSpanLength)
-					yield return s;
-				else foreach (Span t in s.ChopForRendering(maxSpanLength))
-						yield return t;
-			}
+			return src.SelectMany(x => x.Length < MaxSpanLength
+				? x.JustThis() : x.ChopForRendering(MaxSpanLength));
 		}
 	}
 }

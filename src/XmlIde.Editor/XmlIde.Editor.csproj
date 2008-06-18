@@ -86,7 +86,6 @@
     <Compile Include="Language\Rule.cs" />
     <Compile Include="Language\Scope.cs" />
     <Compile Include="Region.cs" />
-    <Compile Include="RegionManager.cs" />
     <Compile Include="RenderCache.cs" />
     <Compile Include="Style.cs" />
     <Compile Include="StyleProvider.cs" />

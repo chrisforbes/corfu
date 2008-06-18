@@ -1,26 +1,23 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Xml;
+using System.Linq;
 using System.Reflection;
+using System.Xml;
 
 namespace XmlIde.Editor.Gutter
 {
 	class Gutter
 	{
-		ICollection<IGutterElement> elements = new List<IGutterElement>();
-		int width;
-
-		public int Width { get { return width; } }
+		ICollection<IGutterElement> elements;
+		public int Width { get; private set; }
 
 		public void Paint(Graphics g, int y, int lineHeight, Line line)
 		{
 			DrawBackground(g, y, lineHeight);
 
-			Point p = new Point(0, y);
-			foreach (IGutterElement e in elements)
+			var p = new Point(0, y);
+			foreach (var e in elements)
 			{
 				e.Draw(g, p, lineHeight, line);
 				p.X += e.Width;
@@ -29,28 +26,20 @@ namespace XmlIde.Editor.Gutter
 
 		void DrawBackground(Graphics g, int y, int height)
 		{
-			g.FillRectangle(backgroundBrush, 0, y, width, height);
-			g.DrawLine(gutterEdgePen, width - 1, y, width - 1, y + height);
-		}
-
-		public void Add(IGutterElement element)
-		{
-			elements.Add(element);
-			width += element.Width;
+			g.FillRectangle(backgroundBrush, 0, y, Width, height);
+			g.DrawLine(gutterEdgePen, Width - 1, y, Width - 1, y + height);
 		}
 
 		public void Reload()
 		{
-			elements.Clear();
-			width = 0;
+			var doc = new XmlDocument();
+			doc.Load("/res/gutter.xml".AsAbsolute());
 
-			XmlDocument doc = new XmlDocument();
-			doc.Load(Config.GetAbsolutePath("/res/gutter.xml"));
-			foreach (XmlElement e in doc.SelectNodes("/gutter/element[@visible=\"true\"]"))
-			{
-				string classPath = e.GetAttribute("class");
-				Add((IGutterElement)Assembly.GetExecutingAssembly().CreateInstance(classPath));
-			}
+			elements = doc.SelectNodes("/gutter/element[@visible=\"true\"]").Cast<XmlElement>()
+				.Select(x => (IGutterElement)Assembly.GetExecutingAssembly().CreateInstance(x.GetAttribute("class")))
+				.ToList();
+
+			Width = elements.Sum(x => x.Width);
 		}
 
 		readonly Pen gutterEdgePen = new Pen(Brushes.LightGray);
