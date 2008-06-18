@@ -33,8 +33,8 @@ namespace XmlIde.Editor
 
 		public static Caret AtVirtualPosition(Document d, Point location)
 		{
-			Caret c = Caret.AtStartOfLine(d, location.Y);
-			c.column = c.GetRealColumn(location.X);
+			Caret c = Caret.AtStartOfLine(d, location.X);
+			c.column = c.GetRealColumn(location.Y);
 			return c;
 		}
 
