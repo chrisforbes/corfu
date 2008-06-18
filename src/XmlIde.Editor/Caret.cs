@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using IjwFramework.Types;
+using System.Drawing;
 
 namespace XmlIde.Editor
 {
@@ -30,10 +31,10 @@ namespace XmlIde.Editor
 			this.column = column;
 		}
 
-		public static Caret AtVirtualPosition(Document d, int line, int column)
+		public static Caret AtVirtualPosition(Document d, Point location)
 		{
-			Caret c = Caret.AtStartOfLine(d, line);
-			c.column = c.GetRealColumn(column);
+			Caret c = Caret.AtStartOfLine(d, location.Y);
+			c.column = c.GetRealColumn(location.X);
 			return c;
 		}
 

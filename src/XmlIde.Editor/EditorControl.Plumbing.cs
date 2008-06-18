@@ -173,18 +173,12 @@ namespace XmlIde.Editor
 
 		protected virtual void HandleMouse(MouseEventArgs e, bool updateMark)
 		{
+			if (e.Button != MouseButtons.Left || !isSelecting) return;
+
 			InvalidateSelectedRegion(document.Selection);
-
-			if (e.Button == MouseButtons.Left && isSelecting)
-			{
-				Point location = GetVirtualPosition(e.Location);
-				document.Point = Caret.AtVirtualPosition(document, location.X, location.Y);
-
-				if (updateMark)	document.Mark = document.Point;
-
-				EnsureVisible();
-			}
-
+			document.Point = Caret.AtVirtualPosition(document, GetVirtualPosition(e.Location));
+			if (updateMark) document.Mark = document.Point;
+			EnsureVisible();
 			InvalidateSelectedRegion(document.Selection);
 		}
 
