@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace XmlIde.Editor.Gutter
@@ -9,7 +6,7 @@ namespace XmlIde.Editor.Gutter
 	{
 		public void Draw(Graphics g, Point location, int height, Line line)
 		{
-			Brush dirtyBrush = GetDirtyBrush(line);
+			var dirtyBrush = GetDirtyBrush(line);
 			if (dirtyBrush != null)
 				g.FillRectangle(dirtyBrush, location.X, location.Y, Width, height);
 		}
@@ -18,12 +15,9 @@ namespace XmlIde.Editor.Gutter
 		{
 			switch (line.Dirty)
 			{
-				case LineModification.Unsaved:
-					return Brushes.Yellow;
-				case LineModification.Saved:
-					return Brushes.GreenYellow;
-				default:
-					return null;
+				case LineModification.Unsaved: return Brushes.Yellow;
+				case LineModification.Saved: return Brushes.GreenYellow;
+				default: return null;
 			}
 		}
 

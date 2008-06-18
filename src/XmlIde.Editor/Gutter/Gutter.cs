@@ -42,13 +42,9 @@ namespace XmlIde.Editor.Gutter
 			Width = elements.Sum(x => x.Width);
 		}
 
-		readonly Pen gutterEdgePen = new Pen(Brushes.LightGray);
+		readonly Pen gutterEdgePen = new Pen(Brushes.LightGray) { DashStyle = DashStyle.Dot };
 		readonly Brush backgroundBrush = Brushes.White;
 
-		public Gutter()
-		{
-			gutterEdgePen.DashStyle = DashStyle.Dot;
-			Reload();
-		}
+		public Gutter() { Reload(); }
 	}
 }

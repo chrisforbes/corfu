@@ -106,5 +106,12 @@ namespace XmlIde.Editor
 		{
 			return new Pair<A, B>(a, b);
 		}
+
+		public static string Reverse(this string s)
+		{
+			var ch = s.ToCharArray();
+			Array.Reverse(ch);
+			return new string(ch);
+		}
 	}
 }

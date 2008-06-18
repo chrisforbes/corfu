@@ -42,16 +42,14 @@ namespace XmlIde.Editor
 		public static Caret AtStartOfDocument(Document document) { return new Caret(document, 0, 0); }
 		public static Caret AtEndOfDocument(Document Document) { return AtEndOfLine(Document, Document.Lines.Count - 1); }
 
-		internal Caret( Caret other )
-			: this( other.document, other.line, other.column )
-		{
-		}
+		internal Caret(Caret other)
+			: this(other.document, other.line, other.column) {}
 
 		public Line CurrentLine { get { return document.Lines[line]; } }
-		
-		public char CharOnRight { get { return document.Lines[ line ].Text[ column ]; } }
-		public char CharOnLeft { get { return document.Lines[ line ].Text[ column - 1 ]; } }
-		
+
+		public char CharOnRight { get { return document.Lines[line].Text[column]; } }
+		public char CharOnLeft { get { return document.Lines[line].Text[column - 1]; } }
+
 		public bool StartOfFile { get { return line <= 0 && StartOfLine; } }
 		public bool EndOfFile { get { return line >= document.Lines.Count - 1 && EndOfLine; } }
 
@@ -91,30 +89,30 @@ namespace XmlIde.Editor
 
 		internal void MoveEnd() { column = CurrentLine.Text.Length; }
 
-		internal void Insert( char c, bool insertIndent )
+		internal void Insert(char c, bool insertIndent)
 		{
 			if (c == '\r')
 				return;
 
-			if(c == '\n')
-				SplitLine( insertIndent );
+			if (c == '\n')
+				SplitLine(insertIndent);
 			else
 			{
-				CurrentLine.Insert( c, column, line );
+				CurrentLine.Insert(c, column, line);
 				MoveRight();
 			}
 		}
 
-		internal void Insert( IEnumerable<char> chars, bool insertIndent )
+		internal void Insert(IEnumerable<char> chars, bool insertIndent)
 		{
 			if (chars == null)
 				return;
 
-			foreach( char c in chars )
-				Insert( c, insertIndent );
+			foreach (char c in chars)
+				Insert(c, insertIndent);
 		}
 
-		void SplitLine( bool insertIndent)
+		void SplitLine(bool insertIndent)
 		{
 			string indent = CurrentLine.Text.Substring(0, CurrentLine.Indent);
 			string before = TextBefore;
@@ -149,10 +147,10 @@ namespace XmlIde.Editor
 			column = GetRealColumn(effectiveIndex);
 		}
 
-		internal void MoveDownStart( int delta )
+		internal void MoveDownStart(int delta)
 		{
 			int newLineIndex = line + delta;
-			if( newLineIndex < 0 || newLineIndex >= document.Lines.Count)
+			if (newLineIndex < 0 || newLineIndex >= document.Lines.Count)
 				return;
 
 			line += delta;
@@ -161,18 +159,18 @@ namespace XmlIde.Editor
 
 		internal void DeleteLeft()
 		{
-			if( column > 0 )
-				CurrentLine.Delete( --column, line );
-			else if( line > 0 )
+			if (column > 0)
+				CurrentLine.Delete(--column, line);
+			else if (line > 0)
 			{
 				string oldLine = CurrentLine.Text;
-				document.Lines.RemoveAt( line-- );
+				document.Lines.RemoveAt(line--);
 				column = CurrentLine.Text.Length;
 				CurrentLine.Text = CurrentLine.Text + oldLine;
 			}
 		}
 
-		public static bool operator ==( Caret l, Caret r )
+		public static bool operator ==(Caret l, Caret r)
 		{
 			if (object.ReferenceEquals(l, r))
 				return true;
@@ -197,9 +195,9 @@ namespace XmlIde.Editor
 		public static Caret Min(Caret l, Caret r) { return l > r ? r : l; }
 
 		public static Caret Max(Pair<Caret, Caret> p) { return Max(p.First, p.Second); }
-		public static Caret Min(Pair<Caret, Caret> p) { return Min( p.First, p.Second ); }
+		public static Caret Min(Pair<Caret, Caret> p) { return Min(p.First, p.Second); }
 
-		public static Pair<Caret,Caret> Order(Pair<Caret, Caret> p)
+		public static Pair<Caret, Caret> Order(Pair<Caret, Caret> p)
 		{
 			return new Pair<Caret, Caret>(Min(p), Max(p));
 		}
@@ -230,32 +228,19 @@ namespace XmlIde.Editor
 
 		public static bool operator >=(Caret l, Caret r) { return !(l < r); }
 		public static bool operator <=(Caret l, Caret r) { return !(l > r); }
-		public static bool operator !=( Caret l, Caret r ) { return !(l == r); }
+		public static bool operator !=(Caret l, Caret r) { return !(l == r); }
 
 		public override int GetHashCode()
 		{
 			return line.GetHashCode() ^ column.GetHashCode();
 		}
 
-		public override bool Equals( object obj )
+		public override bool Equals(object obj)
 		{
 			Caret c = obj as Caret;
 			return c != null && this == c;
 		}
 
-		public string Style
-		{
-			get
-			{
-				if (CurrentLine.Spans == null)
-					return "(no styling information)";
-
-				foreach (Span s in CurrentLine.Spans)
-					if (s.Start <= Column && s.End >= Column)
-						return s.Style;
-
-				return "(no styling information)";
-			}
-		}
+		public string Style { get { return CurrentLine.StyleAt(Column); } }
 	}
 }

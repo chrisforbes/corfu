@@ -69,6 +69,7 @@ namespace XmlIde.Editor
 			set
 			{
 				int dy = FirstVisibleLine - value;
+				if (dy == 0) return;
 				document.FirstVisibleLine = value;
 
 				if (VerticalScroll.Position != value)
@@ -178,21 +179,14 @@ namespace XmlIde.Editor
 
 		public void EnsureVisible()
 		{
-			int lineNumber = document.Point.Line.Clamp(0,document.Lines.Count);
-
-			if (lineNumber < FirstVisibleLine)
-				FirstVisibleLine = lineNumber;
-			else if (lineNumber > FirstVisibleLine + VisibleLines)
-				FirstVisibleLine = lineNumber - VisibleLines;
-
+			int lineNumber = document.Point.Line.Clamp(0,document.Lines.Count - 1);
 			int columnNumber = document.Point.TextBefore.ExpandTabs().Length;
-			if (columnNumber < FirstVisibleColumn)
-				FirstVisibleColumn = columnNumber;
-			else if (columnNumber > FirstVisibleColumn + VisibleColumns)
-				FirstVisibleColumn = columnNumber - (int)(0.7 * VisibleColumns);
+
+			FirstVisibleLine = FirstVisibleLine.Clamp(lineNumber - VisibleLines + 2, lineNumber);
+			FirstVisibleColumn = FirstVisibleColumn.Clamp(columnNumber - (int)(0.7 * VisibleColumns), columnNumber);
 		}
 
-		int VisibleLines { get { return ClientSize.Height / Font.Height - 1; } }
+		int VisibleLines { get { return (ClientSize.Height + Font.Height - 1)/ Font.Height; } }
 		int VisibleColumns { get { return (int)(ClientSize.Width  / geometry.CharWidth - 3); } }
 		
 		int LastVisibleLine

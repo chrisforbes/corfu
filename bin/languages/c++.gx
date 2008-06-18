@@ -9,15 +9,15 @@
 in [source.c++]
 	/\b(int|float|double|long|short|char|wchar_t|void)\b/ -> [keyword.type]
 	/\b(unsigned|signed)\b/ -> [keyword.type]
-	/\b(virtual|static|const|volatile|auto|register|restrict|mutable)\b/ -> [keyword.modifier]
+	/\b(virtual|static|const|volatile|auto|register|restrict|mutable|extern|inline)\b/ -> [keyword.modifier]
 	/\b(if|while|for|do|switch|goto|continue|break|return|case|using|namespace)\b/ -> [keyword]
-	/\b(struct|class|template|union|enum)\b/ -> [keyword]
+	/\b(struct|class|template|union|enum|typedef)\b/ -> [keyword]
 	
 	/\b(public|private|protected)\b/ -> [keyword.visibility]
 	
 	/\/\/.*$/ -> [comment.single-line]
 	/\/\*/ -> [comment.multi-line]
-		enter: []				-- can omit scope name here, to use the scope name above
+		enter: [comment.multi-line]				-- can omit scope name here, to use the scope name above
 		
 in [source.c++ comment.multi-line]
 	/\*\// -> [comment.multi-line]
@@ -32,5 +32,5 @@ in [source.c++]
 		enter: [string]
 		
 in [source.c++ string]		-- note we can use descendant selectors, like in CSS
-	/(?<!\\)(\\\\)*"/ -> [source.c++ string]		-- this is the other way: use [] to avoid adding a scope,
+	/(?<!\\)(\\\\)*"/ -> [string]		-- this is the other way: use [] to avoid adding a scope,
 		leave: before			-- and pop the scope after the end of the match

@@ -76,7 +76,6 @@
     <Compile Include="Gutter\IGutterElement.cs" />
     <Compile Include="Find\Finder.cs" />
     <Compile Include="Find\IFinder.cs" />
-    <Compile Include="ILineNavigator.cs" />
     <Compile Include="Gutter\LineNumber.cs" />
     <Compile Include="ITextBuffer.cs" />
     <Compile Include="Find\PrimitiveFinder.cs" />

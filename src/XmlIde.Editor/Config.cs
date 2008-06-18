@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 using System.Linq;
+using System.Xml;
 using IjwFramework.Types;
 
 namespace XmlIde.Editor
@@ -10,11 +10,6 @@ namespace XmlIde.Editor
 	public static class Config
 	{
 		public static string AsAbsolute(this string resourceName)
-		{
-			return GetAbsolutePath(resourceName);
-		}
-
-		public static string GetAbsolutePath(string resourceName)
 		{
 			return Path.GetDirectoryName(Environment.GetCommandLineArgs().First())
 				+ (resourceName.StartsWith("/") || resourceName.StartsWith("\\") ? "" : "/") + resourceName;

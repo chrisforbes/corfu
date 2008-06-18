@@ -43,7 +43,6 @@
 		<menu-item path="Edit/Find" handler="ShowFindBar" image="find" shortcut="Control+F" ehook="doc" />
 		<menu-item path="Edit/Swap Mark and Point" handler="SwapMarkAndPoint" shortcut="Control+M" ehook="doc" />
 		<menu-item path="Edit/Reload Languages" handler="ReloadStylers" shortcut="Control+K" ehook="doc"/>
-		<menu-item path="Edit/Load Language Definition" handler="LoadLanguageDefinition" shortcut="Control+D" ehook="doc"/>
 		
 		<menu-item path="Window/Next" handler="NextDocument" shortcut="Control+Tab" ehook="mdoc" />
 		<menu-item path="Window/Previous" handler="PreviousDocument" shortcut="Control+Shift+Tab" ehook="mdoc" />

@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using XmlIde.Editor.Commands;
 
@@ -16,8 +17,8 @@ namespace XmlIde.Editor
 			keyBindings.Offer("MoveUp", SelectionMovement(_ => document.MovePoint(Direction.Up)));
 			keyBindings.Offer("MoveDown", SelectionMovement(_ => document.MovePoint(Direction.Down)));
 
-			keyBindings.Offer("MoveByWordLeft", SelectionMovement(_ => MoveByWord(new ReverseLineNavigator(document))));
-			keyBindings.Offer("MoveByWordRight", SelectionMovement(_ => MoveByWord(new ForwardLineNavigator(document))));
+			keyBindings.Offer("MoveByWordLeft", SelectionMovement(_ => MoveByWord(Direction.Left)));
+			keyBindings.Offer("MoveByWordRight", SelectionMovement(_ => MoveByWord(Direction.Right)));
 
 			keyBindings.Offer("MoveDocumentStart", SelectionMovement(_ => document.MovePoint(Direction.DocumentStart)));
 			keyBindings.Offer("MoveDocumentEnd", SelectionMovement(_ => document.MovePoint(Direction.DocumentEnd)));
@@ -70,8 +71,7 @@ namespace XmlIde.Editor
 					document.Apply(new UntabCommand(document));
 			});
 
-			keyBindings.Offer("RefreshStyles",
-			_ =>
+			keyBindings.Offer("RefreshStyles", _ =>
 			{
 				keyBindings.Reload();
 				styleProvider.Reload();
@@ -80,24 +80,18 @@ namespace XmlIde.Editor
 			});
 		}
 
-		void MoveByWord(ILineNavigator navigator)
+		static Regex moveByWordPatternForward = new Regex(@"^(\s+|[a-zA-Z0-9_]+|.)\s*");
+		static Regex moveByWordPatternBackward = new Regex(@"^\s*([a-zA-Z0-9_]+|.)?");
+
+		void MoveByWord(Direction d)
 		{
-			if (navigator.AtEnd)
-			{
-				navigator.Move();
-				return;
-			}
+			if (d != Direction.Left && d != Direction.Right)
+				throw new InvalidOperationException("You're doing it wrong.");
 
-			while (!navigator.AtEnd && char.IsWhiteSpace(navigator.NextChar))
-				navigator.Move();
+			var frag = (d == Direction.Left) ? document.Point.TextBefore.Reverse() : document.Point.TextAfter;
+			var pattern = (d == Direction.Left) ? moveByWordPatternBackward : moveByWordPatternForward;
 
-			if (navigator.AtEnd)
-				return;
-
-			navigator.Move();
-
-			while (!navigator.AtEnd && char.IsLetterOrDigit(navigator.NextChar))
-				navigator.Move();
+			document.MovePoint(d, pattern.Match(frag).Length.Clamp(1, int.MaxValue));
 		}
 
 		Action<Keys> SelectionMovement(Action<Keys> d)
@@ -222,11 +216,11 @@ namespace XmlIde.Editor
 
 			if (!document.Point.StartOfLine)
 			{
-				MoveByWord(new ReverseLineNavigator(document));
+				MoveByWord(Direction.Left);
 				document.Mark = document.Point;
 			}
 
-			MoveByWord(new ForwardLineNavigator(document));
+			MoveByWord(Direction.Right);
 			EnsureVisible();
 		}
 

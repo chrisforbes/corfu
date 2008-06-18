@@ -37,7 +37,7 @@ namespace XmlIde.Editor
 		{
 			get
 			{
-				IList<Line> lines = document.Lines;
+				var lines = document.Lines;
 
 				if (lines.Count > cachedLineNumber && lines[cachedLineNumber] == this)
 					return cachedLineNumber;
@@ -83,7 +83,7 @@ namespace XmlIde.Editor
 			var initialScope = (from == null || from.scopeInfo == null)
 				? document.FileType.RootScope : from.scopeInfo.Second;
 
-			scopeInfo = new Pair<string, string>(initialScope, initialScope);
+			scopeInfo = initialScope.PairedWith(initialScope);
 			Spans = null;
 		}
 
@@ -100,6 +100,17 @@ namespace XmlIde.Editor
 			var nextLine = document.GetLine(lineNumber + 1);
 			if (nextLine != null)
 				nextLine.FixTransitionFrom(this);
+		}
+
+		public string StyleAt(int Column)
+		{
+			if (scopeInfo == null || Spans == null) return "text.plain";
+
+			foreach (Span s in Spans)
+				if (s.Start <= Column && s.End >= Column)
+					return s.Style;
+
+			return scopeInfo.First;
 		}
 	}
 }
