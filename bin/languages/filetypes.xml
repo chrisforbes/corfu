@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+	<!--
+		Defines the known file types. 
+		
+		Note that all we direct from here is the rootscope for the language
+		support. We used to specify a grammar, but this way is easier for
+		mixing languages.
+	--> 
+
 <filetypes>
 	<filetype name="Plain Text" suffix=".txt" rootscope="text.plain"/>
 	<filetype name="Todo List" suffix=".todo" rootscope="text.todo"/>
@@ -22,5 +31,6 @@
 	<filetype name="Assembly Source" suffix=".s" rootscope="source.asm"/>
 	<filetype name="LaTeX Source" suffix=".tex" rootscope="source.latex"/>
 	<filetype name="Corfu Language Grammar" suffix=".gx" rootscope="source.gx"/>
+	<filetype name="XML" suffix=".xml" rootscope="markup.xml"/>
 </filetypes>
 

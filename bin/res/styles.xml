@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <styles>
   <scope name="special">
     <scope name="selection" forecolor="HighlightText" backcolor="Highlight" />
@@ -15,14 +15,14 @@
     <scope name="semantic" forecolor="Purple" />
     <scope name="type" forecolor="Teal" />
   </scope>
-  <scope name="markup" forecolor="Maroon">
-    <scope name="element" forecolor="Navy" />
-    <scope name="attribute" forecolor="Blue" />
-    <scope name="cdata" backcolor="#ddddff" />
-    <scope name="doctype" forecolor="Gray" />
-    <scope name="entity" forecolor="DarkOrange" />
-    <scope name="value" forecolor="Red" />
-  </scope>
+  
+  <scope name="element" forecolor="Maroon" />
+  <scope name="element-name" forecolor="Navy" />
+  <scope name="attribute" forecolor="Blue" />
+  <scope name="value" forecolor="Red"/>
+  <scope name="entity" forecolor="DarkOrange"/>
+  <scope name="cdata" backcolor="#ddddff" />
+  
   <scope name="func" forecolor="Teal" />
   <scope name="type" forecolor="Teal" />
   <scope name="directive" forecolor="Gray" />
