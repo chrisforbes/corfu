@@ -1,0 +1,21 @@
+-- incomplete grammar file for Ruby
+
+in [source.ruby]
+	/\b(if|for|in|unless|while|do|def|end|begin|else|until)\b/ -> [keyword]
+	/\b(rescue|else|ensure|raise|class|return|self|new|nil)\b/ -> [keyword]
+	/#.*$/ -> [comment]
+	/"/ -> [string]
+		enter: [string]
+	/:\w+/ -> [symbol]
+	
+in [source.ruby string]
+	/\\\\/ -> []
+	/\\"/ -> []
+	/"/ -> [string]
+		leave: before
+	/#{/ -> [inline-value]
+		enter: [inline-value]
+		
+in [source.ruby string inline-value]
+	/}/ -> [inline-value]
+		leave: before

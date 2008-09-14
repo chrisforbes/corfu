@@ -32,5 +32,6 @@
 	<filetype name="LaTeX Source" suffix=".tex" rootscope="source.latex"/>
 	<filetype name="Corfu Language Grammar" suffix=".gx" rootscope="source.gx"/>
 	<filetype name="XML" suffix=".xml" rootscope="markup.xml"/>
+	<filetype name="Ruby Source" suffix=".rb" rootscope="source.ruby" />
 </filetypes>
 
