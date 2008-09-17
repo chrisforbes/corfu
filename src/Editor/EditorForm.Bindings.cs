@@ -61,7 +61,8 @@ namespace Editor
 			if (Document == null)
 				return;
 
-			Document.SwapMarkAndPoint();
+			var carets = Document.GetCarets();
+			Document.SetCarets(carets.Swap());
 			editor.Invalidate();
 		}
 

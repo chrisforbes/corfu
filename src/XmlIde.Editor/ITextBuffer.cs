@@ -12,6 +12,5 @@ namespace XmlIde.Editor
 		void MovePoint(Direction direction);
 		
 		void ReplaceText(string newText, bool indent);
-		void SwapMarkAndPoint();
 	}
 }

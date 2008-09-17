@@ -72,7 +72,10 @@ namespace Corfu.Language
 			if (captureScopes != null && captureScopes.Count > 0)
 				throw new NotImplementedException();
 
-			yield return new Span(m.Index, m.Length, scope + " " + ScopeName);
+			yield return new Span(m.Index, m.Length, 
+				string.IsNullOrEmpty(ScopeName) 
+					? scope 
+					: (scope + " " + ScopeName));
 		}
 	}
 }

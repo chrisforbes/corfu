@@ -6,8 +6,8 @@ namespace XmlIde.Editor.Commands
 	{
 		public IndentBlockCommand(Document document)
 		{
-			before = CommandHelper.GetCarets(document);
-			after = CommandHelper.GetCarets(document);
+			before = document.GetCarets();
+			after = document.GetCarets();
 
 			after.First.MoveRight();
 			after.Second.MoveRight();
@@ -29,7 +29,7 @@ namespace XmlIde.Editor.Commands
 				inner.Add(new ReplaceText(document, "\t"));
 			}
 
-			CommandHelper.Apply(document, before);
+			document.SetCarets(before);
 		}
 	}
 }

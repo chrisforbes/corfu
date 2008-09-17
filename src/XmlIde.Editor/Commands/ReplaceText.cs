@@ -39,9 +39,9 @@ namespace XmlIde.Editor.Commands
 			if (done)
 				throw new InvalidOperationException("Command is already applied.");
 
-			CommandHelper.Apply(target, before);
+			target.SetCarets(before);
 			target.ReplaceText(textAfter, autoIndent);
-			after = CommandHelper.GetCarets(target);
+			after = target.GetCarets();
 			target.Mark = target.Point;
 			done = true;
 		}
@@ -51,9 +51,9 @@ namespace XmlIde.Editor.Commands
 			if (!done)
 				throw new InvalidOperationException("Command is already unapplied.");
 
-			CommandHelper.Apply(target, after);
+			target.SetCarets(after);
 			target.ReplaceText(textBefore, false);
-			CommandHelper.Apply(target, before);
+			target.SetCarets(before);
 			done = false;
 		}
 	}

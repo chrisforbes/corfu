@@ -17,11 +17,11 @@ in [source.c++]
 	
 	/\/\/.*$/ -> [comment.single-line]
 	/\/\*/ -> [comment.multi-line]
-		enter: [comment.multi-line]				-- can omit scope name here, to use the scope name above
+		enter: []				-- can omit scope name here, to use the scope name above
 		
 in [source.c++ comment.multi-line]
-	/\*\// -> [comment.multi-line]
-		leave: before			-- leave: accepts `after` or `before`; this is just
+	/\*\// -> []
+		leave: after			-- leave: accepts `after` or `before`; this is just
 								-- choosing when to pop the scope. this method is really
 								-- intended for a closing fragment that needs to be
 								-- styled differently
@@ -31,6 +31,6 @@ in [source.c++]
 	/"/ -> [string]
 		enter: [string]
 		
-in [source.c++ string]		-- note we can use descendant selectors, like in CSS
-	/(?<!\\)(\\\\)*"/ -> [string]		-- this is the other way: use [] to avoid adding a scope,
-		leave: before			-- and pop the scope after the end of the match
+in [source.c++ string]			-- note we can use descendant selectors, like in CSS
+	/(?<!\\)(\\\\)*"/ -> []		-- this is the other way: use [] to avoid adding a scope,
+		leave: after			-- and pop the scope after the end of the match

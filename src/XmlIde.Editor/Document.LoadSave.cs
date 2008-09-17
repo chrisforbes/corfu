@@ -61,7 +61,7 @@ namespace XmlIde.Editor
 		public void Save() { SaveAs(FilePath); }
 		public void SaveAs(string path)
 		{
-			using (TextWriter writer = new StreamWriter(path))
+			using (var writer = new StreamWriter(path))
 			{
 				writer.NewLine = Environment.NewLine;
 

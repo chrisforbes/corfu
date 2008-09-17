@@ -86,7 +86,7 @@ namespace Editor
 				i.Enabled = tabStrip.Count > 1;
 		}
 
-		void SetStyleStatus() { styleLabel.Text = Document.Point.Style; }
+		void SetStyleStatus() { styleLabel.Text = "`" + Document.Point.Style + "`"; }
 
 		void UndoCapabilityChanged()
 		{

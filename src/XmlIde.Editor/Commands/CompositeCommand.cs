@@ -20,7 +20,7 @@ namespace XmlIde.Editor.Commands
 			foreach (ICommand r in inner)
 				r.Do(target);
 
-			CommandHelper.Apply(target, after);
+			target.SetCarets(after);
 			done = true;
 		}
 
@@ -32,8 +32,7 @@ namespace XmlIde.Editor.Commands
 			for (int i = inner.Count - 1; i >= 0; i--)
 				inner[i].Undo(target);
 
-			CommandHelper.Apply(target, before);
-
+			target.SetCarets(before);
 			done = false;
 		}
 	}

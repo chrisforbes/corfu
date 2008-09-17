@@ -6,8 +6,8 @@ namespace XmlIde.Editor.Commands
 	{
 		public UnindentBlockCommand(Document document)
 		{
-			before = CommandHelper.GetCarets(document);
-			after = CommandHelper.GetCarets(document);
+			before = document.GetCarets();
+			after = document.GetCarets();
 			var sortedBefore = Caret.Order(before);
 
 			for (int i = sortedBefore.First.Line; i <= sortedBefore.Second.Line; i++)
@@ -32,7 +32,7 @@ namespace XmlIde.Editor.Commands
 				}
 			}
 
-			CommandHelper.Apply(document, before);
+			document.SetCarets(before);
 		}
 	}
 }

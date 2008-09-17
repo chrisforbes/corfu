@@ -51,12 +51,12 @@ namespace XmlIde.Editor
 			return lines[lineNumber];
 		}
 
-		public event Action<Region> BeforeReplace = delegate { };
-		public event Action<Region> AfterReplace = delegate { };
+		public event Action<Region> BeforeReplace = _ => { };
+		public event Action<Region> AfterReplace = _ => { };
 
 		public void ReplaceText(string newText, bool indent)
 		{
-			Pair<Caret, Caret> before = Caret.Order(point, mark);
+			var before = Caret.Order(point, mark);
 			BeforeReplace(Selection);
 
 			if (before.Second != before.First)
@@ -107,17 +107,10 @@ namespace XmlIde.Editor
 				MovePoint(direction);
 		}
 
-		public void SwapMarkAndPoint()
-		{
-			Caret temp = point;
-			point = mark;
-			mark = temp;
-		}
-
 		public IEnumerable<Span> ApplySelectionSpan(IEnumerable<Span> spans, Line line)
 		{
-			Region r = new Region(Point, Mark);
-			Span selection = r.GetSpan(line, "special.selection");
+			var r = new Region(Point, Mark);
+			var selection = r.GetSpan(line, "special.selection");
 			return (selection != null) ? selection.ApplyTo(spans) : spans;
 		}
 

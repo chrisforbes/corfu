@@ -208,25 +208,6 @@ namespace XmlIde.Editor
 			return new Pair<Caret, Caret>(Min(a, b), Max(a, b));
 		}
 
-		public static int operator -(Caret a, Caret b)
-		{
-			int i = 0;
-			b = new Caret(b);
-			while (b > a)
-			{
-				b.MoveLeft();
-				--i;
-			}
-
-			while (b < a)
-			{
-				b.MoveRight();
-				++i;
-			}
-
-			return i;
-		}
-
 		public static bool operator >=(Caret l, Caret r) { return !(l < r); }
 		public static bool operator <=(Caret l, Caret r) { return !(l > r); }
 		public static bool operator !=(Caret l, Caret r) { return !(l == r); }
@@ -238,7 +219,7 @@ namespace XmlIde.Editor
 
 		public override bool Equals(object obj)
 		{
-			Caret c = obj as Caret;
+			var c = obj as Caret;
 			return c != null && this == c;
 		}
 

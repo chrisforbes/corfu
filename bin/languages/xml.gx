@@ -14,12 +14,12 @@ in [markup.xml]
 		enter: [element]
 		
 in [markup.xml cdata]
-	/\]\]>/ -> [cdata]
-		leave: before
+	/\]\]>/ -> []
+		leave: after
 		
 in [markup.xml comment]
-	/(?<!-)-->/ -> [comment]	-- a comment is ended with `-->`, but not
-		leave: before			-- `--->` etc
+	/(?<!-)-->/ -> []	-- a comment is ended with `-->`, but not
+		leave: after			-- `--->` etc
 	
 in [markup.xml element]
 	/\b(\w)+\s*=/ -> [attribute]
