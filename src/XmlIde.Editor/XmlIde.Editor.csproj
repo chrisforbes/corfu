@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{48B0E05E-3A10-48EF-B077-3FE88A1AE69F}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -94,11 +94,9 @@
     <Compile Include="Direction.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="EditorControl.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="EditorControl.Plumbing.cs">
       <DependentUpon>EditorControl.cs</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="KeyBindings.cs" />
     <Compile Include="Line.cs" />
