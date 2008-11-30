@@ -94,9 +94,11 @@
     <Compile Include="Direction.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="EditorControl.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="EditorControl.Plumbing.cs">
       <DependentUpon>EditorControl.cs</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="KeyBindings.cs" />
     <Compile Include="Line.cs" />

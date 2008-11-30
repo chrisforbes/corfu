@@ -62,7 +62,7 @@ namespace Corfu.Language
 				return scope.Substring(0, scope.LastIndexOf(' '));
 
 			if (action == RuleAction.Push)
-				return scope + " " + actionScopeName;
+				return string.IsNullOrEmpty(actionScopeName) ? ScopeName : actionScopeName;
 
 			return scope;
 		}
