@@ -61,21 +61,28 @@ namespace XmlIde.Editor
 		public void Save() { SaveAs(FilePath); }
 		public void SaveAs(string path)
 		{
-			using (var writer = new StreamWriter(path))
-			{
-				writer.NewLine = Environment.NewLine;
+            try
+            {
+                using (var writer = new StreamWriter(path))
+                {
+                    writer.NewLine = Environment.NewLine;
 
-				foreach (Line line in lines)
-					writer.WriteLine(line.Text);
+                    foreach (Line line in lines)
+                        writer.WriteLine(line.Text);
 
-				writer.Flush();
-			}
+                    writer.Flush();
+                }
 
-			FilePath = path;
-			needSaveAs = false;
-			Dirty = false;
+                FilePath = path;
+                needSaveAs = false;
+                Dirty = false;
 
-			lastModified = File.GetLastWriteTime(FilePath);
+                lastModified = File.GetLastWriteTime(FilePath);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                MessageBox.Show("Unauthorized access exception: You may not have permission to write to this file \n"+ e.Message, "Write Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 		}
 
 		string filePath;

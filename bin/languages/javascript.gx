@@ -1,0 +1,21 @@
+-- JavaScript language grammar
+
+in [source.javascript]
+	/\b(function|var|return)\b/ -> [keyword]
+	
+	/\/\/.*$/ -> [comment.single-line]
+	
+	/\/\*/ -> [comment.multi-line]
+		enter: [comment.multi-line]
+		
+in [source.javascript comment.multi-line]
+	/\*\// -> []
+		leave: after
+		
+in [source.javascript]
+	/"/ -> [string]
+		enter: [string]
+
+in [source.javascript string]
+	/((?<!\\)(\\\\)*"|.$)/ -> []
+		leave: after

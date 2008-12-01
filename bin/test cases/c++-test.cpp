@@ -6,6 +6,10 @@
 #include <string>
 #include <map>
 
+/*
+This is a multiline comment
+*/
+
 #include "classfactory.h"
 
 #pragma comment(lib, "corguids.lib")

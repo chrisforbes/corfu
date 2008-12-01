@@ -1,0 +1,36 @@
+-- Python language grammar
+
+in [source.python]
+	/\b(import|as|def|class|None|True|False|self|print)\b/ -> [keyword]
+	/\b(from|for|in|if|not|return|yield|else|continue)\b/ -> [keyword]
+	/\b(elif|break|while|or|and|pass|len|raise|try|except)\b/ -> [keyword]
+	
+	/#.*$/ -> [comment]
+	
+	/"""/ -> [string.multi-line.double-quote]
+		enter: [string.multi-line.double-quote]
+		
+	/'''/ -> [string.multi-line.single-quote]
+		enter: [string.multi-line.single-quote]
+
+in [source.python string.multi-line.double-quote]
+	/(?<!\\)(\\\\)*"""/ -> []
+		leave: after
+		
+in [source.python string.multi-line.single-quote]
+	/(?<!\\)(\\\\)*'''/ -> []
+		leave: after
+
+in [source.python]
+	/'/ -> [string.single-quote]
+		enter: [string.single-quote]
+	/"/ -> [string.double-quote]
+		enter: [string.double-quote]
+
+in [source.python string.single-quote]
+	/((?<!\\)(\\\\)*'|.$)/ -> []
+		leave: after
+		
+in [source.python string.double-quote]
+	/((?<!\\)(\\\\)*"|.$)/ -> []
+		leave: after

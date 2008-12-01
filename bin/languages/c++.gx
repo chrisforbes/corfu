@@ -15,9 +15,12 @@ in [source.c++]
 	
 	/\b(public|private|protected)\b/ -> [keyword.visibility]
 	
+	/^\s*#(define|elif|else|endif|error|if|ifdef|ifndef)\b/ -> [keyword.preprocessor]
+	/^\s*#(import|include|line|pragma|undef|using)\b/ -> [keyword.preprocessor]
+	
 	/\/\/.*$/ -> [comment.single-line]
 	/\/\*/ -> [comment.multi-line]
-		enter: []				-- can omit scope name here, to use the scope name above
+		enter: [comment.multi-line]				-- can omit scope name here, to use the scope name above
 		
 in [source.c++ comment.multi-line]
 	/\*\// -> []
@@ -32,5 +35,5 @@ in [source.c++]
 		enter: [string]
 		
 in [source.c++ string]			-- note we can use descendant selectors, like in CSS
-	/(?<!\\)(\\\\)*"/ -> []		-- this is the other way: use [] to avoid adding a scope,
+	/((?<!\\)(\\\\)*"|.$)/ -> []		-- this is the other way: use [] to avoid adding a scope,
 		leave: after			-- and pop the scope after the end of the match
