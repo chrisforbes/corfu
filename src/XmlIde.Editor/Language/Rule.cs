@@ -62,7 +62,10 @@ namespace Corfu.Language
 				return scope.Substring(0, scope.LastIndexOf(' '));
 
 			if (action == RuleAction.Push)
-				return string.IsNullOrEmpty(actionScopeName) ? ScopeName : actionScopeName;
+				return	(scope + " " + 
+							(string.IsNullOrEmpty(actionScopeName) ? ScopeName : actionScopeName)
+						)
+						.TrimEnd();
 
 			return scope;
 		}
@@ -73,9 +76,7 @@ namespace Corfu.Language
 				throw new NotImplementedException();
 
 			yield return new Span(m.Index, m.Length, 
-				string.IsNullOrEmpty(ScopeName) 
-					? scope 
-					: (scope + " " + ScopeName));
+				(scope + " " + ScopeName).TrimEnd());
 		}
 	}
 }

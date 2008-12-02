@@ -20,7 +20,7 @@ in [source.c++]
 	
 	/\/\/.*$/ -> [comment.single-line]
 	/\/\*/ -> [comment.multi-line]
-		enter: [comment.multi-line]				-- can omit scope name here, to use the scope name above
+		enter: []				-- can omit scope name here, to use the scope name above
 		
 in [source.c++ comment.multi-line]
 	/\*\// -> []
@@ -31,8 +31,8 @@ in [source.c++ comment.multi-line]
 	
 in [source.c++]
 	-- note that we can open up a scope ANYWHERE and add more stuff to it
-	/"/ -> [string]
-		enter: [string]
+	/"(?!$)/ -> [string]
+		enter: []
 		
 in [source.c++ string]			-- note we can use descendant selectors, like in CSS
 	/((?<!\\)(\\\\)*"|.$)/ -> []		-- this is the other way: use [] to avoid adding a scope,

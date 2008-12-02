@@ -1,0 +1,29 @@
+--C# Language Grammar
+
+in [source.c#]
+	/\b(public|protected|internal|private)\b/ -> [keyword.visibility]
+	/\b(virtual|override|const|stackalloc|static)\b/ -> [keyword.modifier]
+	/\b(object|int|float|bool|uint|long|ulong)\b/ -> [keyword.type]
+	/\b(short|ushort|byte|sbyte|void|string|null)\b/ -> [keyword.type]
+	/\b(class|struct|using|namespace|for|while)\b/ -> [keyword]
+	/\b(foreach|if|else|switch|case|default)\b/ -> [keyword]
+	/\b(new|delegate|readonly|is|as|get|set|event)\b/ -> [keyword]
+	/\b(unsafe|fixed|volatile)\b/ -> [keyword]
+	/\b(return|true|false|this|base|out|ref|throw|try|catch|partial)\b/ -> [keyword]
+
+	/\/\/.*$/ -> [comment.single-line]
+	
+	/\/\*/ -> [comment.multi-line]
+		enter: []
+
+in [source.c# comment.multi-line]
+	/\*\// -> []
+		leave: after
+		
+in [source.c#]
+	/"(?!$)/ -> [string]
+		enter: []
+		
+in [source.c# string]
+	/((?<!\\)(\\\\)*"|.$)/ -> []
+		leave: after

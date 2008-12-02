@@ -8,10 +8,10 @@ in [source.python]
 	/#.*$/ -> [comment]
 	
 	/"""/ -> [string.multi-line.double-quote]
-		enter: [string.multi-line.double-quote]
+		enter: []
 		
 	/'''/ -> [string.multi-line.single-quote]
-		enter: [string.multi-line.single-quote]
+		enter: []
 
 in [source.python string.multi-line.double-quote]
 	/(?<!\\)(\\\\)*"""/ -> []
@@ -22,10 +22,10 @@ in [source.python string.multi-line.single-quote]
 		leave: after
 
 in [source.python]
-	/'/ -> [string.single-quote]
-		enter: [string.single-quote]
-	/"/ -> [string.double-quote]
-		enter: [string.double-quote]
+	/'(?!$)/ -> [string.single-quote]
+		enter: []
+	/"(?!$)/ -> [string.double-quote]
+		enter: []
 
 in [source.python string.single-quote]
 	/((?<!\\)(\\\\)*'|.$)/ -> []
