@@ -1,4 +1,4 @@
--- simple subset of C
+-- c++ syntax highlighting
 
 -- things to note: while we have a formatting *convention*, 
 -- the tabs etc are not mandatory.

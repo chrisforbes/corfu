@@ -1,0 +1,9 @@
+-- LaTeX language grammar
+
+in [source.latex]
+	/\\[$#%^&_{}]/ -> [keyword.semantic]
+	/%.*$/ -> [comment]
+	/\\.+?\b/ -> [keyword]
+	/{.*?}/ -> [string]
+	/\$/ -> [keyword.directive]
+	

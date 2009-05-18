@@ -9,7 +9,7 @@ in [source.c#]
 	/\b(foreach|if|else|switch|case|default)\b/ -> [keyword]
 	/\b(new|delegate|readonly|is|as|get|set|event)\b/ -> [keyword]
 	/\b(unsafe|fixed|volatile)\b/ -> [keyword]
-	/\b(return|true|false|this|base|out|ref|throw|try|catch|partial)\b/ -> [keyword]
+	/\b(return|true|false|this|base|out|ref|throw|try|catch|partial|var)\b/ -> [keyword]
 
 	/\/\/.*$/ -> [comment.single-line]
 	
