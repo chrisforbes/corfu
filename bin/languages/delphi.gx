@@ -1,0 +1,27 @@
+-- delphi language definition
+
+in [source.delphi]
+	/\b(class|interface|implementation|initialization)\b/ -> [keyword]
+	/\b(uses|unit|type|const|var|function|procedure|begin|end|if|then|with|while|do|else)\b/ -> [keyword]
+	/\b(public|private|protected|published)\b/ -> [keyword.visibility]
+	/\b(true|false|nil|is|until|repeat|try|raise|except|finally|not|or|and|div)\b/ -> [keyword]
+	/\b(of|array|for|to|downto)\b/ -> [keyword]
+	/\{/ -> [comment.multi-line.a]
+		enter: []
+	/\(\*/ -> [comment.multi-line.b]
+		enter: []
+	/'/ -> [string]
+		enter: []
+	/\/\/.*$/ -> [comment.single-line]
+			
+in [source.delphi comment.multi-line.a]
+	/\}/ -> []
+		leave: after
+		
+in [source.delphi comment.multi-line.b]
+	/\*\)/ -> []
+		leave: after
+		
+in [source.delphi string]
+	/'/ -> []
+		leave: after
