@@ -1,0 +1,22 @@
+-- haskell syntax highlighting
+
+in [source.haskell]
+	/--.*$/ -> [comment.single-line]
+	/{-/ -> [comment.multi-line]
+		enter: []
+	/\b(module|where|infixl|infixr|infix|class|if|then|else|error|otherwise|data)\b/ -> [keyword]
+	/\b(deriving|instance|primitive|type|newtype|do|case|of|null)\b/ -> [keyword]
+	/"/ -> [string.double-quoted]
+		enter: []
+	/'.{1,2}'/ -> [string.single-quoted]
+		
+in [source.haskell comment.multi-line]
+	/{-/ -> [comment.multi-line]
+		enter: []
+	/-}/ -> []
+		leave: after
+		
+in [source.haskell string.double-quoted]
+	/(?<!\\)(\\\\)*"/ -> []
+		leave: after
+
