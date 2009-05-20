@@ -176,6 +176,8 @@ namespace Editor
 						{
 							Document.FileType = f;
 							editor.Invalidate();
+							documentTypeLabel.Text = "Document Type: " +
+								Document.FileType.Name;
 						}
 					});
 			}

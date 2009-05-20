@@ -1,0 +1,11 @@
+-- Windows INI files
+
+in [text.ini]
+	/[#;].*$/ -> [comment]
+	/\[/ -> [punctuation]
+		enter: [string]
+	/^[^=]+=/ -> [attribute]
+		
+in [text.ini string]
+	/\]/ -> [punctuation]
+		leave: before
