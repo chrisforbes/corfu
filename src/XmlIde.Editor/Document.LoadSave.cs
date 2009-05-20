@@ -8,9 +8,13 @@ namespace XmlIde.Editor
 	partial class Document
 	{
 		bool needSaveAs;
-		readonly FileType fileType;
+		FileType fileType;
 
-		public FileType FileType { get { return fileType; } }
+		public FileType FileType
+		{
+			get { return fileType; }
+			set { fileType = value; ResetStylerPosition(0); }
+		}
 
 		IEnumerable<string> GetFileContent(string path)
 		{

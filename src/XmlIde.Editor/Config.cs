@@ -31,6 +31,11 @@ namespace XmlIde.Editor
 				?? ChooseFileType( "bogus.txt" );
 		}
 
+		public static IEnumerable<FileType> FileTypes
+		{
+			get { return fileTypes.Value.Values; }
+		}
+
 		public static string DefaultSaveLocation = 
 			Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments );
 	}

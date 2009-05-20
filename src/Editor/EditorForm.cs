@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Xml;
 using IjwFramework.Ui;
 using XmlIde.Editor;
+using System.Collections;
 
 namespace Editor
 {
@@ -108,14 +109,8 @@ namespace Editor
 
 		void LoadDocumentEx(string filename)
 		{
-			try
-			{
-				LoadDocument(filename);
-			}
-			catch (FileNotFoundException fnf)
-			{
-				MessageBox.Show(fnf.Message);
-			}
+			try { LoadDocument(filename); }
+			catch (FileNotFoundException fnf) { MessageBox.Show(fnf.Message); }
 		}
 
 		void LoadFilesFromCommandLine()
@@ -167,6 +162,23 @@ namespace Editor
 					GetNamedHandler(e.GetAttribute("handler"))), e);
 
 			findBar = new FindBar(workspace, editor);
+
+			var styleContextMenu = new ContextMenuStrip();
+			statusStrip.ContextMenuStrip = styleContextMenu;
+
+			foreach (var filetype in Config.FileTypes.Distinct(a => a.RootScope))
+			{
+				var f = filetype;
+				styleContextMenu.Items.Add(filetype.RootScope, null,
+					(e, _) =>
+					{
+						if (Document != null)
+						{
+							Document.FileType = f;
+							editor.Invalidate();
+						}
+					});
+			}
 		}
 
 		void OpenFiles( IEnumerable<string> files )
@@ -290,5 +302,24 @@ namespace Editor
 				LoadDocument(fn);
 			}
 		}
+	}
+}
+
+static class Exts
+{
+	class KeyEqualityComparer<T, U> : IEqualityComparer<T>
+	{
+		readonly Func<T,U> f;
+		static readonly EqualityComparer<U> c = EqualityComparer<U>.Default;
+
+		public KeyEqualityComparer(Func<T,U> f) { this.f = f; }
+
+		public bool Equals(T x, T y) { return c.Equals( f(x), f(y) ); }
+		public int GetHashCode(T x) { return c.GetHashCode( f(x) ); }
+	}
+
+	public static IEnumerable<T> Distinct<T, U>(this IEnumerable<T> ts, Func<T, U> f)
+	{
+		return ts.Distinct(new KeyEqualityComparer<T,U>(f));
 	}
 }
