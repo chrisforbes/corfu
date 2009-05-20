@@ -1,0 +1,14 @@
+-- High Level Shader Language
+
+in [source.hlsl]
+	/\/\/.*$/ -> [comment.single-line]
+	/\b((int|bool|float)([1-4](x[1-4])?)?|texture|sampler|void)\b/ -> [keyword.type]
+	/\b([vpgt]s_\d_\d)\b/ -> [keyword.type.target]
+	/\b(struct|return|const|technique|pass|compile|shared)\b/ -> [keyword]
+	/\b(true|false|if|else|for|while|continue|break|sampler_state)\b/ -> [keyword]
+	/\/\*/ -> [comment.multi-line]
+		enter: []
+
+in [source.hlsl comment.multi-line]
+	/\*\// -> []
+		leave: after		
