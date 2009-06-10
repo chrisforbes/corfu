@@ -1,0 +1,5 @@
+-- Windows CMD shell script
+
+in [source.cmd]
+	/::.*$/ -> [comment]
+	/%[^%]+%/ -> [string.envvar]

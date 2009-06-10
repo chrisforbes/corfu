@@ -16,6 +16,7 @@
 	<filetype name="Cascading Style Sheet" suffix=".css" rootscope="text.css"/>
 	<filetype name="ABC Notation File" suffix=".abc" rootscope="text.abc"/>
 	<filetype name="Delphi Source File" suffix=".pas" rootscope="source.delphi"/>
+	<filetype name="Delphi Project File" suffix=".dpr" rootscope="source.delphi"/>
 	<filetype name="Haskell Source File" suffix=".hs" rootscope="source.haskell"/>
 	<filetype name="HLSL Source" suffix=".fx" rootscope="source.hlsl"/>
 	<filetype name="HLSL Source" suffix=".fxi" rootscope="source.hlsl"/>
@@ -33,5 +34,6 @@
 	<filetype name="Corfu Language Grammar" suffix=".gx" rootscope="source.gx"/>
 	<filetype name="XML" suffix=".xml" rootscope="markup.xml"/>
 	<filetype name="Ruby Source" suffix=".rb" rootscope="source.ruby" />
+	<filetype name="CMD shell script" suffix=".cmd" rootscope="source.cmd"/>
 </filetypes>
 
