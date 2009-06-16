@@ -35,5 +35,6 @@
 	<filetype name="XML" suffix=".xml" rootscope="markup.xml"/>
 	<filetype name="Ruby Source" suffix=".rb" rootscope="source.ruby" />
 	<filetype name="CMD shell script" suffix=".cmd" rootscope="source.cmd"/>
+	<filetype name="Makefile" suffix=".mak" rootscope="source.makefile"/>
 </filetypes>
 

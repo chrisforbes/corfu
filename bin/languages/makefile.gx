@@ -1,0 +1,21 @@
+-- makefile grammar, sortof
+
+in [source.makefile]
+	/#.*$/ -> [comment.single-line]
+	/\w+\s+(\+?)=/ -> [keyword]
+	/^\S+:/ -> [keyword.type]
+	/(\$@)|(\$<)/ -> [keyword.magic]
+	/\$\(/ -> [keyword]
+		enter: [string.expansion]
+	/`/ -> [string.exec]
+		enter: []
+	/^\s*-/ -> [keyword.type.ignore-errors]
+	/^\s*@/ -> [keyword.type.stfu]
+
+in [source.makefile string.expansion]
+	/\)/ -> [keyword]
+		leave: before
+		
+in [source.makefile string.exec]
+	/`/ -> []
+		leave: after
