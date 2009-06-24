@@ -6,7 +6,7 @@ in [source.delphi]
 	/\b(public|private|protected|published)\b/ -> [keyword.visibility]
 	/\b(true|false|nil|is|until|repeat|try|raise|except|finally|not|or|and|div)\b/ -> [keyword]
 	/\b(of|array|for|to|downto|program|library|exports|export|finalization)\b/ -> [keyword]
-	/\b(package|requires|contains|override)\b/ -> [keyword]
+	/\b(package|requires|contains|override|constructor|destructor)\b/ -> [keyword]
 	/\{/ -> [comment.multi-line.a]
 		enter: []
 	/\(\*/ -> [comment.multi-line.b]
@@ -16,6 +16,8 @@ in [source.delphi]
 	/\b(property)\b/ -> [keyword]
 		enter: [property]
 	/\/\/.*$/ -> [comment.single-line]
+	/asm/ -> [keyword]
+		enter: [source.delphi.inline-asm]
 	
 in [source.delphi property]		-- contextual keywords
 	/\b(read|write|default|stored)\b/ -> [keyword]
@@ -33,3 +35,7 @@ in [source.delphi comment.multi-line.b]
 in [source.delphi string]
 	/'/ -> []
 		leave: after
+		
+in [source.delphi source.delphi.inline-asm]
+	/end/ -> [keyword]
+		leave: before
