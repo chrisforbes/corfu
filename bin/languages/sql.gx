@@ -1,0 +1,21 @@
+-- Simple (and probably subtly broken! grammar file for XML
+-- Note: `leave:after` seems to be subtly broken. This will be
+-- fixed in 1.3-final
+
+in [source.sql]
+	/--.*$/ -> [comment]
+	/\b(CREATE TABLE|SELECT|INSERT INTO|VALUES)\b/ -> [keyword]
+	/\b(TINYINT|SMALLINT|INT|FLOAT|REAL|BIT|TEXT|VARCHAR|NVARCHAR|CHAR|NCHAR|DATETIME)\b/ -> [keyword]	-- keyword.type
+	/\b(IDENTITY)\b/ -> [keyword]
+	/'/ -> [string.single-quote]
+		enter: []
+	/\[/ -> [keyword.type.escape]
+		enter: [escape]
+		
+in [source.sql string.single-quote]
+	/'/ -> []
+		leave: after
+		
+in [source.sql escape]
+	/\]/ -> [keyword.type.escape]
+		leave: before
