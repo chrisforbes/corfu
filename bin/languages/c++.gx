@@ -11,7 +11,7 @@ in [source.c++]
 	/\b(unsigned|signed)\b/ -> [keyword.type]
 	/\b(virtual|static|const|volatile|auto|register|restrict|mutable|extern|inline)\b/ -> [keyword.modifier]
 	/\b(if|while|for|do|switch|goto|continue|break|return|case|using|namespace|else)\b/ -> [keyword]
-	/\b(struct|class|template|union|enum|typedef)\b/ -> [keyword]
+	/\b(struct|class|template|union|enum|typedef|new|delete|default)\b/ -> [keyword]
 	
 	/\b(public|private|protected)\b/ -> [keyword.visibility]
 	
