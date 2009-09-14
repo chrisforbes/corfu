@@ -22,6 +22,7 @@
 	<filetype name="HLSL Source" suffix=".fxi" rootscope="source.hlsl"/>
 	<filetype name="C++ Source" suffix=".cpp" rootscope="source.c++"/>
 	<filetype name="C++ Source" suffix=".cxx" rootscope="source.c++"/>
+	<filetype name="C++ Source" suffix=".cc" rootscope="source.c++"/>
 	<filetype name="C Source" suffix=".c" rootscope="source.c++"/>
 	<filetype name="C/C++ Header" suffix=".h" rootscope="source.c++"/>
 	<filetype name="Java Source" suffix=".java" rootscope="source.java"/>
