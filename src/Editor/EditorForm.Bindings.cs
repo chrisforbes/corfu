@@ -88,10 +88,10 @@ namespace Editor
 		{
 			var newItemForm = new NewItemForm();
 
-			if( newItemForm.ShowDialog() != DialogResult.OK )
+			if (newItemForm.ShowDialog() != DialogResult.OK)
 				return;
 
-			tabStrip.Add( newItemForm.NewDocument );
+			tabStrip.Add(newItemForm.NewDocument);
 		}
 
 		void Open()
@@ -125,15 +125,15 @@ namespace Editor
 
 		void Copy()
 		{
-			if( Document == null )
+			if (Document == null)
 				return;
 
-			if( Document.Mark == Document.Point )
+			if (Document.Mark == Document.Point)
 			{
 				Caret oldPoint = Document.Point;
-				Document.MovePoint( Direction.AbsoluteLineStart );
+				Document.MovePoint(Direction.AbsoluteLineStart);
 				Document.Mark = Document.Point;
-				Document.MovePoint( Direction.Down );
+				Document.MovePoint(Direction.Down);
 				CopySelection();
 				Document.Point = oldPoint;
 			}
@@ -144,14 +144,14 @@ namespace Editor
 		void CopySelection()
 		{
 			var s = Document.Selection.Content;
-			if( string.IsNullOrEmpty( s ) )
+			if (string.IsNullOrEmpty(s))
 				return;
 
-            var historyItem = Pair.New(s, Document.Filename);
+			var historyItem = Pair.New(s, Document.Filename);
 
-			clipboardHistory.Remove( historyItem );
-			clipboardHistory.Insert( 0, historyItem );
-			Clipboard.SetText( s );
+			clipboardHistory.Remove(historyItem);
+			clipboardHistory.Insert(0, historyItem);
+			Clipboard.SetText(s);
 		}
 
 		void Paste()
@@ -219,8 +219,8 @@ namespace Editor
 
 		void SaveAll()
 		{
-			foreach( Document document in tabStrip.Documents )
-				Save( document );
+			foreach (Document document in tabStrip.Documents)
+				Save(document);
 
 			editor.Invalidate();
 		}
@@ -237,22 +237,21 @@ namespace Editor
 
 		void ReloadStylers()
 		{
-            GrammarLoader.ReloadGrammar();
+			GrammarLoader.ReloadGrammar();
 
-            var errs = GrammarLoader.Grammar.Errors;
+			var errorFile = "/languages/errors.txt".AsAbsolute();
+			var doc = tabStrip.Documents.FirstOrDefault(f => f.FilePath == errorFile);
 
-            var errorFile = "/languages/errors.txt".AsAbsolute();
-            var doc = tabStrip.Documents.FirstOrDefault( f => f.FilePath == errorFile );
+			if (doc != null)
+				tabStrip.Close(doc, true);
 
-            if (doc != null)
-                tabStrip.Close(doc, true);
-
-            if (errs.Any())
-            {
-                File.WriteAllLines(errorFile, errs.Select(
-                    e => "{0}: {1}".F(Path.GetFileName(e.First), e.Second)).ToArray());
-                OpenFiles(errorFile.JustThis());
-            }
+			var errs = GrammarLoader.Grammar.Errors;
+			if (errs.Any())
+			{
+				File.WriteAllLines(errorFile, errs.Select(
+					e => "{0}: {1}".F(Path.GetFileName(e.First), e.Second)).ToArray());
+				OpenFiles(errorFile.JustThis());
+			}
 
 			foreach (Document d in tabStrip.Documents)
 				d.ReloadStyler();
