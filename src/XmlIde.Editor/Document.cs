@@ -116,7 +116,6 @@ namespace XmlIde.Editor
 
 		public void ReloadStyler()
 		{
-			GrammarLoader.ReloadGrammar();
 			foreach (Line l in lines) l.ReStyle(l.Number);
 		}
 	}

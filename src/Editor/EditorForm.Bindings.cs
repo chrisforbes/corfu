@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Linq;
 using Ijw.Updates;
 using IjwFramework;
 using IjwFramework.Types;
 using XmlIde.Editor;
 using XmlIde.Editor.Commands;
+using System.IO;
 
 namespace Editor
 {
@@ -145,7 +147,7 @@ namespace Editor
 			if( string.IsNullOrEmpty( s ) )
 				return;
 
-			var historyItem = s.PairedWith(Document.Filename);
+            var historyItem = Pair.New(s, Document.Filename);
 
 			clipboardHistory.Remove( historyItem );
 			clipboardHistory.Insert( 0, historyItem );
@@ -235,6 +237,23 @@ namespace Editor
 
 		void ReloadStylers()
 		{
+            GrammarLoader.ReloadGrammar();
+
+            var errs = GrammarLoader.Grammar.Errors;
+
+            var errorFile = "/languages/errors.txt".AsAbsolute();
+            var doc = tabStrip.Documents.FirstOrDefault( f => f.FilePath == errorFile );
+
+            if (doc != null)
+                tabStrip.Close(doc, true);
+
+            if (errs.Any())
+            {
+                File.WriteAllLines(errorFile, errs.Select(
+                    e => "{0}: {1}".F(Path.GetFileName(e.First), e.Second)).ToArray());
+                OpenFiles(errorFile.JustThis());
+            }
+
 			foreach (Document d in tabStrip.Documents)
 				d.ReloadStyler();
 

@@ -64,6 +64,7 @@ namespace Editor
 			UndoCapabilityChanged();
 			DocumentCountChanged();
 
+            ReloadStylers();
 			LoadFilesFromCommandLine();
 
 			Activated += (_, e) => ProtectedCheckForModifiedDocuments();

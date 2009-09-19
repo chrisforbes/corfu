@@ -15,7 +15,7 @@ namespace XmlIde.Editor.Find
 		public Pair<int, int> FindNext(string source, string match)
 		{
 			var m = new Regex(match, options).Match(source);
-			return m.Success ? m.Index.PairedWith(m.Length) : Finder.NotFound;
+			return m.Success ? Pair.New(m.Index, m.Length) : Finder.NotFound;
 		}
 	}
 }

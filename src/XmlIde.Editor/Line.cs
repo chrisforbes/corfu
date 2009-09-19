@@ -83,7 +83,7 @@ namespace XmlIde.Editor
 			var initialScope = (from == null || from.scopeInfo == null)
 				? document.FileType.RootScope : from.scopeInfo.Second;
 
-			scopeInfo = initialScope.PairedWith(initialScope);
+            scopeInfo = Pair.New(initialScope, initialScope);
 			Spans = null;
 		}
 

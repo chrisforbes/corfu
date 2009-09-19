@@ -34,7 +34,7 @@ namespace Corfu.Language
 			if (captureScopes == null)
 				captureScopes = new List<Pair<int, string>>();
 
-			captureScopes.Add(n.PairedWith(scopeName));
+			captureScopes.Add(Pair.New(n, scopeName));
 		}
 
 		public void SetAction(RuleAction action, string actionScopeName)

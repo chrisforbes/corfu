@@ -12,12 +12,7 @@ namespace XmlIde.Editor.Commands
 
 		public static Pair<Caret, Caret> GetCarets(this ITextBuffer target)
 		{
-			return target.Point.PairedWith(target.Mark);
-		}
-
-		public static Pair<T, U> Swap<T, U>(this Pair<U, T> p)
-		{
-			return p.Second.PairedWith(p.First);
+            return Pair.New(target.Point, target.Mark);
 		}
 	}
 }

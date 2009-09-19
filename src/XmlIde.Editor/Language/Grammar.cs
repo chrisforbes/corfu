@@ -18,6 +18,9 @@ namespace Corfu.Language
 	public class Grammar
 	{
 		Cache<string, Scope> scopes = new Cache<string, Scope>(x => new Scope(x));
+        List<Pair<string, string>> errors = new List<Pair<string, string>>();
+
+        public IEnumerable<Pair<string, string>> Errors { get { return errors; } }
 
 		public Grammar() { }
 
@@ -28,53 +31,57 @@ namespace Corfu.Language
 
 			foreach (var line in File.ReadAllLines(filename))
 			{
-				var tokens = GetTokens(line).ToArray();
-				if (tokens.Length == 0) continue;
+                try
+                {
+                    var tokens = GetTokens(line).ToArray();
+                    if (tokens.Length == 0) continue;
 
-				if (tokens[0].First == GrammarToken.Pattern)
-				{
-					if (tokens.Length != 3 || tokens[1].First != GrammarToken.Arrow || tokens[2].First != GrammarToken.ScopeName)
-						throw new InvalidDataException("Expected `pattern -> scopename`");
+                    if (tokens[0].First == GrammarToken.Pattern)
+                    {
+                        if (tokens.Length != 3 || tokens[1].First != GrammarToken.Arrow || tokens[2].First != GrammarToken.ScopeName)
+                            throw new InvalidDataException("Expected `pattern -> scopename`");
 
-					if (currentScopes.Count == 0) throw new InvalidDataException("Rule without context");
-					rule = new Rule(tokens[0].Second, tokens[2].Second);
-					foreach (var scope in currentScopes)
-						scope.AddRule(rule);
-				}
+                        if (currentScopes.Count == 0) throw new InvalidDataException("Rule without context");
+                        rule = new Rule(tokens[0].Second, tokens[2].Second);
+                        foreach (var scope in currentScopes)
+                            scope.AddRule(rule);
+                    }
 
-				if (tokens[0].First == GrammarToken.Keyword)
-				{
-					if (tokens[0].Second == "in")
-					{
-						if (tokens.Length != 2 || tokens[1].First != GrammarToken.ScopeName)
-							throw new InvalidDataException("Expected `scopename` to follow `in`");
+                    if (tokens[0].First == GrammarToken.Keyword)
+                    {
+                        if (tokens[0].Second == "in")
+                        {
+                            if (tokens.Length != 2 || tokens[1].First != GrammarToken.ScopeName)
+                                throw new InvalidDataException("Expected `scopename` to follow `in`");
 
-						currentScopes = tokens[1].Second.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-							.Select(x => scopes[x.Trim()]).ToList();
-					}
-					else if (tokens[0].Second == "enter:")
-					{
-						if (rule == null)
-							throw new InvalidDataException("`enter` action without rule");
+                            currentScopes = tokens[1].Second.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(x => scopes[x.Trim()]).ToList();
+                        }
+                        else if (tokens[0].Second == "enter:")
+                        {
+                            if (rule == null)
+                                throw new InvalidDataException("`enter` action without rule");
 
-						rule.SetAction(RuleAction.Push, tokens[1].Second);
-					}
-					else if (tokens[0].Second == "leave:")
-					{
-						if (rule == null)
-							throw new InvalidDataException("`leave` action without rule");
-						rule.SetAction(tokens[1].Second == "after" ? RuleAction.PopAfter : RuleAction.PopBefore);
-					}
-					else
-					{
-						var capnum = tokens[0].Second.Substring(0, tokens[0].Second.Length - 1);
-						int n;
-						if (!int.TryParse(capnum, out n))
-							throw new InvalidDataException("Unrecognized option: {0}".F(tokens[0].Second));
+                            rule.SetAction(RuleAction.Push, tokens[1].Second);
+                        }
+                        else if (tokens[0].Second == "leave:")
+                        {
+                            if (rule == null)
+                                throw new InvalidDataException("`leave` action without rule");
+                            rule.SetAction(tokens[1].Second == "after" ? RuleAction.PopAfter : RuleAction.PopBefore);
+                        }
+                        else
+                        {
+                            var capnum = tokens[0].Second.Substring(0, tokens[0].Second.Length - 1);
+                            int n;
+                            if (!int.TryParse(capnum, out n))
+                                throw new InvalidDataException("Unrecognized option: {0}".F(tokens[0].Second));
 
-						rule.SetCaptureScope(n, tokens[1].Second);
-					}
-				}
+                            rule.SetCaptureScope(n, tokens[1].Second);
+                        }
+                    }
+                }
+                catch (Exception e) { errors.Add(Pair.New(filename, e.Message)); }
 			}
 
 			return this;
@@ -103,19 +110,19 @@ namespace Corfu.Language
 
 					case GrammarToken.ScopeName:
 						if (c == '\n') throw new InvalidDataException("While parsing {0}; end of line found while looking for `]`".F(line));
-						if (c == ']') { yield return type.PairedWith(token); type = GrammarToken.None; }
+                        if (c == ']') { yield return Pair.New(type, token); type = GrammarToken.None; }
 						token += c;
 						break;
 
 					case GrammarToken.Arrow:
 						if (c == '-') { yield break; }
-						if (c == '>') { token += c; yield return type.PairedWith(token); type = GrammarToken.None; }
+                        if (c == '>') { token += c; yield return Pair.New(type, token); type = GrammarToken.None; }
 						else throw new InvalidDataException("While parsing {0}; Expected `-` or `>` but found {1}".F(line, c)); 
 						break;
 
 					case GrammarToken.Pattern:
 						if (c == '\\') { type = GrammarToken.PatternEscape; }
-						else if (c == '/') { yield return type.PairedWith(token); type = GrammarToken.None; }
+                        else if (c == '/') { yield return Pair.New(type, token); type = GrammarToken.None; }
 						else token += c;
 						break;
 
@@ -127,7 +134,7 @@ namespace Corfu.Language
 						break;
 
 					case GrammarToken.Keyword:
-						if (c == ' ' || c == '\t' || c == '\n') { yield return type.PairedWith(token); type = GrammarToken.None; }
+                        if (c == ' ' || c == '\t' || c == '\n') { yield return Pair.New(type, token); type = GrammarToken.None; }
 						else token += c;
 						break;
 				}

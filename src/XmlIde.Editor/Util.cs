@@ -102,11 +102,6 @@ namespace XmlIde.Editor
 
 		public static IEnumerable<T> JustThis<T>(this T t) { yield return t; }
 		
-		public static Pair<A, B> PairedWith<A, B>(this A a, B b)
-		{
-			return new Pair<A, B>(a, b);
-		}
-
 		public static string Reverse(this string s)
 		{
 			var ch = s.ToCharArray();
