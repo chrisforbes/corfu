@@ -1,0 +1,7 @@
+-- Todo list grammar
+
+in [text.todo]
+	/\[ \]/ -> [item.not-done]
+	/\[\?\]/ -> [item.maybe-done]
+	/\[[xX]\]/ -> [item.done]
+	/~\S*/ -> [username]
